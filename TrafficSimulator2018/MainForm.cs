@@ -39,7 +39,7 @@ namespace TrafficSimulator2018
 				int x, y;
 				for(y = 0; y<panel.Size.Height; y++){
 					for(x = 0; x<panel.Size.Width; x++){
-						
+						g.DrawRectangle(p, new Rectangle(x,y,x,y));
 					}
 				}
 			}
