@@ -24,7 +24,7 @@ namespace TrafficSimulator2018
 			// Read in the people here
 		}
 		
-		public static List<People> GetPeople() {
+		public static List<Person> GetPeople() {
 			return people;
 		}
 		
