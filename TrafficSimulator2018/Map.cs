@@ -45,7 +45,8 @@ namespace TrafficSimulator2018
 			paths.Add(new Path(GetNode(3), GetNode(4), 1.0));
 			paths.Add(new Path(GetNode(3), GetNode(6), 1.6));
 			paths.Add(new Path(GetNode(4), GetNode(5), 0.5));
-			paths.Add(new Path(GetNode(6), GetNode(6), 0.3));
+			paths.Add(new Path(GetNode(4), GetNode(6), 0.5));
+			paths.Add(new Path(GetNode(6), GetNode(7), 0.3));
 		}
 		
 		// Returns a List<Route> object that contains all of the routes in the map.

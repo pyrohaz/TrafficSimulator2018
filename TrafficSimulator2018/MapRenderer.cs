@@ -31,6 +31,7 @@ namespace TrafficSimulator2018
 		}
 		
 		public void Render(){
+			panelgfx.Clear(Color.White);
 			DrawPaths();
 			DrawNodes();
 		}
@@ -65,7 +66,6 @@ namespace TrafficSimulator2018
 		void DrawNodes(){
 			//Plot all nodes on panel
 			Brush b = new SolidBrush(Color.Black);
-			panelgfx.Clear(Color.White);
 			
 			for(int n = 0; n<Map.GetNodes().Count; n++){
 				double nxl, nyu;
@@ -97,7 +97,7 @@ namespace TrafficSimulator2018
 					nxl2 = xleft + (nx2 - xmin)*(double)(xright-xleft)/(xmax-xmin);
 					nyu2 = ytop + (ny2 - ymin)*(double)(ybottom-ytop)/(ymax-ymin);
 					
-					panelgfx.DrawLine(new Pen(Color.DarkGreen), (int)nxl1, (int)nyu1, (int)nxl2, (int)nyu2);
+					panelgfx.DrawLine(new Pen(Color.Aquamarine), (int)nxl1, (int)nyu1, (int)nxl2, (int)nyu2);
 				}
 			}
 		}
