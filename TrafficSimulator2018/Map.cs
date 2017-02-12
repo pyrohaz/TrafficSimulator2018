@@ -49,8 +49,7 @@ namespace TrafficSimulator2018
 		}
 		
 		// Returns a List<Route> object that contains all of the routes in the map.
-		public static List<Path> GetRoutes()
-		{
+		public static List<Path> GetPaths() {
 			return paths;
 		}
 		
@@ -60,8 +59,7 @@ namespace TrafficSimulator2018
 		
 		// Returns the node with the corresponding id. If no node exists with that ID, a message is displayed
 		// and a null pointer is returned.
-		public static Node GetNode(int id)
-		{
+		public static Node GetNode(int id) {
 			for (int i = 0; i < nodes.Count; i++)
 			{
 				if (nodes[0].getID() == id)
@@ -77,7 +75,7 @@ namespace TrafficSimulator2018
 		
 		// Returns all of the routes that are connected to the specified node. This returns
 		// null if the node does not exit.
-		public static List<Path> GetRoutesFromNode(int nodeID)
+		public static List<Path> GetPathsFromNode(int nodeID)
 		{
 			Node node = GetNode(nodeID);
 			return GetRoutesFromNode(node);
@@ -85,7 +83,7 @@ namespace TrafficSimulator2018
 		
 		// Returns all of the routes that are connected to the specified node. This returns
 		// null if the node does not exit.
-		public static List<Path> GetRoutesFromNode(Node node)
+		public static List<Path> GetPathsFromNode(Node node)
 		{
 			
 			// Returns null if the node does not exist.
