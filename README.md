@@ -1,2 +1,2 @@
 # TrafficSimulator2018
-+ RIchard
++ Richard
