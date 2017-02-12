@@ -15,8 +15,29 @@ namespace TrafficSimulator2018
 	/// </summary>
 	public class Path
 	{
+		
+		double speed_limit = 0;
+		
 		public Path()
 		{
 		}
+		
+		// Constructor that allows the speed limit to be set upon initialisation
+		public Path(double speed_limit)
+		{
+			this.speed_limit = speed_limit;
+		}
+		
+		// Returns a double representing the speed limit of the path
+		public double getSpeedLimit()
+		{
+			return speed_limit;
+		}
+		
+		// Sets the speed limit of the path
+		public void setSpeedLimit(double speed_limit) {
+			this.speed_limit = speed_limit;
+		}
+		
 	}
 }
