@@ -49,12 +49,12 @@ namespace TrafficSimulator2018
 			xmax = double.MinValue;
 			ymin = double.MaxValue;
 			ymax = double.MinValue;
-			for(int n = 0; n<Map.getNodes().Count; n++){
-				if(Map.getNodes()[n].getX() < xmin) xmin = Map.getNodes()[n].getX();
-				else if(Map.getNodes()[n].getX() > xmax) xmax = Map.getNodes()[n].getX();
+			for(int n = 0; n<Map.GetNodes().Count; n++){
+				if(Map.GetNodes()[n].GetX() < xmin) xmin = Map.GetNodes()[n].GetX();
+				else if(Map.GetNodes()[n].GetX() > xmax) xmax = Map.GetNodes()[n].GetX();
 				
-				if(Map.getNodes()[n].getY() < ymin) ymin = Map.getNodes()[n].getY();
-				else if(Map.getNodes()[n].getY() > ymax) ymax = Map.getNodes()[n].getY();
+				if(Map.GetNodes()[n].GetY() < ymin) ymin = Map.GetNodes()[n].GetY();
+				else if(Map.GetNodes()[n].GetY() > ymax) ymax = Map.GetNodes()[n].GetY();
 			}
 		}
 		
@@ -67,28 +67,36 @@ namespace TrafficSimulator2018
 			Brush b = new SolidBrush(Color.Black);
 			panelgfx.Clear(Color.White);
 			
-			for(int n = 0; n<Map.getNodes().Count; n++){
+			for(int n = 0; n<Map.GetNodes().Count; n++){
 				double nxl, nyu;
 				
-				nxl = xleft + (Map.getNodes()[n].getX() - xmin)*(double)(xright-xleft)/(xmax-xmin) - NODE_RADIUS/2;
-				nyu = ytop + (Map.getNodes()[n].getY() - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
+				nxl = xleft + (Map.GetNodes()[n].GetX() - xmin)*(double)(xright-xleft)/(xmax-xmin) - NODE_RADIUS/2;
+				nyu = ytop + (Map.GetNodes()[n].GetY() - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
 				
 				//Debug.WriteLine(nxl + " " + nyu);
 			
 				panelgfx.FillEllipse(b, new RectangleF((float)nxl, (float)nyu, NODE_RADIUS, NODE_RADIUS));
-				panelgfx.DrawString(Map.getNodes()[n].getID().ToString(), font, new SolidBrush(Color.Blue), (float)nxl+NODE_RADIUS/2, (float)nyu+NODE_RADIUS/2);
+				panelgfx.DrawString(Map.GetNodes()[n].GetID().ToString(), font, new SolidBrush(Color.Blue), (float)nxl+NODE_RADIUS/2, (float)nyu+NODE_RADIUS/2);
 			}
 		}
 		
 		void DrawPaths(){
-			for(int n = 0; n<Map.getRoutes().Count; n++){
-				double nxl, nyu;
+			for(int n = 0; n<Map.GetPaths().Count; n++){
+				double nxl1, nxl2, nyu1, nyu2;
 				double nx1, nx2, ny1, ny2;
 				
-				nodex = 
+				nx1 = Map.GetPaths()[n].GetNodes()[0].GetX();
+				ny1 = Map.GetPaths()[n].GetNodes()[0].GetY();
+				nx2 = Map.GetPaths()[n].GetNodes()[1].GetX();
+				ny2 = Map.GetPaths()[n].GetNodes()[1].GetY();
 				
-				nxl = xleft + (Map.getNodes()[n].getX() - xmin)*(double)(xright-xleft)/(xmax-xmin) - NODE_RADIUS/2;
-				nyu = ytop + (Map.getNodes()[n].getY() - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
+				nxl1 = xleft + (nx1 - xmin)*(double)(xright-xleft)/(xmax-xmin);
+				nyu1 = ytop + (ny1 - ymin)*(double)(ybottom-ytop)/(ymax-ymin);
+				
+				nxl2 = xleft + (nx2 - xmin)*(double)(xright-xleft)/(xmax-xmin);
+				nyu2 = ytop + (ny2 - ymin)*(double)(ybottom-ytop)/(ymax-ymin);
+				
+				panelgfx.DrawLine(new Pen(Color.DarkGreen), (int)nxl1, (int)nyu1, (int)nxl2, (int)nyu2);
 			}
 		}
 	}

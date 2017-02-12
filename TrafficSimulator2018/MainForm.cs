@@ -35,7 +35,7 @@ namespace TrafficSimulator2018
 		
 		void PanelClick(object sender, EventArgs e)
 		{
-			maprndr.DrawNodes();
+			maprndr.Render();
 		}
 	}
 }

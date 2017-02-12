@@ -62,7 +62,7 @@ namespace TrafficSimulator2018
 		public static Node GetNode(int id) {
 			for (int i = 0; i < nodes.Count; i++)
 			{
-				if (nodes[0].getID() == id)
+				if (nodes[0].GetID() == id)
 				{
 					return nodes[0];
 				}
@@ -78,7 +78,7 @@ namespace TrafficSimulator2018
 		public static List<Path> GetPathsFromNode(int nodeID)
 		{
 			Node node = GetNode(nodeID);
-			return GetRoutesFromNode(node);
+			return GetPathsFromNode(node);
 		}
 		
 		// Returns all of the routes that are connected to the specified node. This returns
