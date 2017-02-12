@@ -50,5 +50,10 @@ namespace TrafficSimulator2018
 			this.speed_limit = speed_limit;
 		}
 		
+		// Returns the ID for the route
+		public int GetRouteID() {
+			return route_ID;
+		}
+		
 	}
 }
