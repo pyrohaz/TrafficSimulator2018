@@ -26,7 +26,7 @@ namespace TrafficSimulator2018
 			return people;
 		}
 		
-		public static void addPerson(Person person) {
+		public static void AddPerson(Person person) {
 			people.add(person);
 		}
 		
