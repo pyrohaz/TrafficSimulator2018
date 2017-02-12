@@ -28,6 +28,21 @@ namespace TrafficSimulator2018
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
+			
+		}
+		void PanelPaint(object sender, PaintEventArgs e)
+		{
+			base.OnPaint(e);
+			using(Graphics g = e.Graphics){
+				var p = new Pen(Color.Black, 3);
+				
+				int x, y;
+				for(y = 0; y<panel.Size.Height; y++){
+					for(x = 0; x<panel.Size.Width; x++){
+						
+					}
+				}
+			}
 		}
 	}
 }
