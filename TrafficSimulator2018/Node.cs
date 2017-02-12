@@ -15,6 +15,10 @@ namespace TrafficSimulator2018
 	/// </summary>
 	public class Node
 	{
+		
+		double x, y;
+		int visitors, id;
+		
 		public Node()
 		{
 			id = -1;
@@ -30,40 +34,38 @@ namespace TrafficSimulator2018
 		}
 		
 		//Sets
-		public void setID(int ID){
+		public void SetID(int ID){
 			id = ID;
 		}	
 		
-		public void setVisitor(int V){
+		public void SetVisitor(int V){
 			visitors = V;
 		}
 		
-		public void setX(double X){
+		public void SetX(double X){
 			x = X;
 		}
 		
-		public void setY(double Y){
+		public void SetY(double Y){
 			y = Y;
 		}
 		
 		//Gets
-		public int getID(){
+		public int GetID(){
 			return id;
 		}
 		
-		public int getVisitors(){
+		public int GetVisitors(){
 			return visitors;
 		}
 		
-		public double getX(){
+		public double GetX(){
 			return x;
 		}
 		
-		public double getY(){
+		public double GetY(){
 			return y;
 		}
 		
-		double x, y;
-		int visitors, id;
 	}
 }
