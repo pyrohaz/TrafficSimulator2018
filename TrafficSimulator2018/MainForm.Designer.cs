@@ -43,12 +43,11 @@ namespace TrafficSimulator2018
 			// panel
 			// 
 			this.panel.BackColor = System.Drawing.Color.White;
-			this.panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.panel.Location = new System.Drawing.Point(13, 13);
 			this.panel.Name = "panel";
 			this.panel.Size = new System.Drawing.Size(732, 567);
 			this.panel.TabIndex = 0;
-			this.panel.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelPaint);
+			this.panel.Click += new System.EventHandler(this.PanelClick);
 			// 
 			// MainForm
 			// 
