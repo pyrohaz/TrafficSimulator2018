@@ -55,6 +55,5 @@ namespace TrafficSimulator2018
 		
 		double x, y;
 		int visitors, id;
-		
 	}
 }
