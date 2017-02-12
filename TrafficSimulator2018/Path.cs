@@ -16,26 +16,37 @@ namespace TrafficSimulator2018
 	public class Path
 	{
 		
+		static int next_route_ID = 0;
+		
+		int route_ID = next_route_ID++;
 		double speed_limit = 0;
+		Node [] nodes = new Node[2];
 		
-		public Path()
-		{
-		}
-		
-		// Constructor that allows the speed limit to be set upon initialisation
-		public Path(double speed_limit)
-		{
+		// Sets the start and end points and speed limit of the path.
+		public Path(Node node1, Node node2, double speed_limit) {
+			nodes[0] = node1;
+			nodes[1] = node2;
 			this.speed_limit = speed_limit;
 		}
 		
+		// Returns an array that contains the start and end points of the path.
+		public Node [] GetNodes() {
+			return nodes;
+		}
+		
+		// Returns the ID of the path.
+		public int GetID() {
+			return route_ID;
+		}
+		
 		// Returns a double representing the speed limit of the path
-		public double getSpeedLimit()
+		public double GetSpeedLimit()
 		{
 			return speed_limit;
 		}
 		
 		// Sets the speed limit of the path
-		public void setSpeedLimit(double speed_limit) {
+		public void SetSpeedLimit(double speed_limit) {
 			this.speed_limit = speed_limit;
 		}
 		

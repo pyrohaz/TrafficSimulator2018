@@ -19,7 +19,7 @@ namespace TrafficSimulator2018
 	{
 		
 		static List<Node> nodes = new List<Node>();
-		static List<Route> routes = new List<Route>();
+		static List<Path> paths = new List<Path>();
 		
 		// Setting up the environment
 		static Map() {
@@ -35,21 +35,32 @@ namespace TrafficSimulator2018
 			nodes.Add(new Node(7, 100, 100));
 			
 			// Setting up routes
+			paths.Add(new Path(GetNode(0), GetNode(1), 0.7));
+			paths.Add(new Path(GetNode(0), GetNode(2), 1.0));
+			paths.Add(new Path(GetNode(1), GetNode(2), 0.3));
+			paths.Add(new Path(GetNode(1), GetNode(3), 1.0));
+			paths.Add(new Path(GetNode(1), GetNode(7), 2.0));
+			paths.Add(new Path(GetNode(2), GetNode(3), 1.0));
+			paths.Add(new Path(GetNode(2), GetNode(5), 1.6));
+			paths.Add(new Path(GetNode(3), GetNode(4), 1.0));
+			paths.Add(new Path(GetNode(3), GetNode(6), 1.6));
+			paths.Add(new Path(GetNode(4), GetNode(5), 0.5));
+			paths.Add(new Path(GetNode(6), GetNode(6), 0.3));
 		}
 		
 		// Returns a List<Route> object that contains all of the routes in the map.
-		public static List<Route> getRoutes()
+		public static List<Path> GetRoutes()
 		{
-			return routes;
+			return paths;
 		}
 		
-		public static List<Node> getNodes() {
+		public static List<Node> GetNodes() {
 			return nodes;
 		}
 		
 		// Returns the node with the corresponding id. If no node exists with that ID, a message is displayed
 		// and a null pointer is returned.
-		public static Node getNode(int id)
+		public static Node GetNode(int id)
 		{
 			for (int i = 0; i < nodes.Count; i++)
 			{
@@ -66,30 +77,29 @@ namespace TrafficSimulator2018
 		
 		// Returns all of the routes that are connected to the specified node. This returns
 		// null if the node does not exit.
-		public static List<Route> getRoutesFromNode(int nodeID)
+		public static List<Path> GetRoutesFromNode(int nodeID)
 		{
-			Node node = getNode(nodeID);
-			return getRoutesFromNode(node);
+			Node node = GetNode(nodeID);
+			return GetRoutesFromNode(node);
 		}
 		
 		// Returns all of the routes that are connected to the specified node. This returns
 		// null if the node does not exit.
-		public static List<Route> getRoutesFromNode(Node node)
+		public static List<Path> GetRoutesFromNode(Node node)
 		{
 			
 			// Returns null if the node does not exist.
 			if (node == null)
 				return null;
 			
-			List<Route> attachedRoutes = new List<Route>();
+			List<Path> attachedRoutes = new List<Path>();
 			
-			loop: for (int i = 0; i < routes.Count; i++) {
-				Node [] attachedNodes = routes[0].getNodes();
+			for (int i = 0; i < paths.Count; i++) {
+				Node [] attachedNodes = paths[0].GetNodes();
 				
 				for (int j = 0; i < attachedNodes.Length; i++) {
-					if (attachedNodes[j] == node)
-					{
-						attachedRoutes.Add(routes[i]);
+					if (attachedNodes[j] == node) {
+						attachedRoutes.Add(paths[i]);
 					}
 				}
 			}
