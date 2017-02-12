@@ -85,7 +85,7 @@ namespace TrafficSimulator2018
 				double nxl1, nxl2, nyu1, nyu2;
 				double nx1, nx2, ny1, ny2;
 				
-				if(Map.GetPaths()[n].GetNodes().Count>0){
+				if(Map.GetPaths()[n].GetNodes()[0] != null &&  Map.GetPaths()[n].GetNodes()[1] != null){
 					nx1 = Map.GetPaths()[n].GetNodes()[0].GetX();
 					ny1 = Map.GetPaths()[n].GetNodes()[0].GetY();
 					nx2 = Map.GetPaths()[n].GetNodes()[1].GetX();
