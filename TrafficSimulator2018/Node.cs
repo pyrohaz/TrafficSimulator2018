@@ -17,6 +17,16 @@ namespace TrafficSimulator2018
 	{
 		public Node()
 		{
+			id = -1;
+			visitors = 0;
+			x = 0.0;
+			y = 0.0;
+		}
+		
+		public Node(int ID, double X, double Y){
+			id = ID;
+			x = X;
+			y = Y;
 		}
 		
 		//Sets
