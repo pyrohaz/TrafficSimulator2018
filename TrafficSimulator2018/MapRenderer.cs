@@ -74,7 +74,7 @@ namespace TrafficSimulator2018
 				nyu = ytop + (Map.GetNodes()[n].GetY() - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
 				
 				//Debug.WriteLine(nxl + " " + nyu);
-			
+				
 				panelgfx.FillEllipse(b, new RectangleF((float)nxl, (float)nyu, NODE_RADIUS, NODE_RADIUS));
 				panelgfx.DrawString(Map.GetNodes()[n].GetID().ToString(), font, new SolidBrush(Color.Blue), (float)nxl+NODE_RADIUS/2, (float)nyu+NODE_RADIUS/2);
 			}
@@ -85,18 +85,20 @@ namespace TrafficSimulator2018
 				double nxl1, nxl2, nyu1, nyu2;
 				double nx1, nx2, ny1, ny2;
 				
-				nx1 = Map.GetPaths()[n].GetNodes()[0].GetX();
-				ny1 = Map.GetPaths()[n].GetNodes()[0].GetY();
-				nx2 = Map.GetPaths()[n].GetNodes()[1].GetX();
-				ny2 = Map.GetPaths()[n].GetNodes()[1].GetY();
-				
-				nxl1 = xleft + (nx1 - xmin)*(double)(xright-xleft)/(xmax-xmin);
-				nyu1 = ytop + (ny1 - ymin)*(double)(ybottom-ytop)/(ymax-ymin);
-				
-				nxl2 = xleft + (nx2 - xmin)*(double)(xright-xleft)/(xmax-xmin);
-				nyu2 = ytop + (ny2 - ymin)*(double)(ybottom-ytop)/(ymax-ymin);
-				
-				panelgfx.DrawLine(new Pen(Color.DarkGreen), (int)nxl1, (int)nyu1, (int)nxl2, (int)nyu2);
+				if(Map.GetPaths()[n].GetNodes().Count>0){
+					nx1 = Map.GetPaths()[n].GetNodes()[0].GetX();
+					ny1 = Map.GetPaths()[n].GetNodes()[0].GetY();
+					nx2 = Map.GetPaths()[n].GetNodes()[1].GetX();
+					ny2 = Map.GetPaths()[n].GetNodes()[1].GetY();
+					
+					nxl1 = xleft + (nx1 - xmin)*(double)(xright-xleft)/(xmax-xmin);
+					nyu1 = ytop + (ny1 - ymin)*(double)(ybottom-ytop)/(ymax-ymin);
+					
+					nxl2 = xleft + (nx2 - xmin)*(double)(xright-xleft)/(xmax-xmin);
+					nyu2 = ytop + (ny2 - ymin)*(double)(ybottom-ytop)/(ymax-ymin);
+					
+					panelgfx.DrawLine(new Pen(Color.DarkGreen), (int)nxl1, (int)nyu1, (int)nxl2, (int)nyu2);
+				}
 			}
 		}
 	}
