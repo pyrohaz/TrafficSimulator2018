@@ -60,11 +60,9 @@ namespace TrafficSimulator2018
 		// Returns the node with the corresponding id. If no node exists with that ID, a message is displayed
 		// and a null pointer is returned.
 		public static Node GetNode(int id) {
-			for (int i = 0; i < nodes.Count; i++)
-			{
-				if (nodes[0].GetID() == id)
-				{
-					return nodes[0];
+			for (int i = 0; i < nodes.Count; i++) {
+				if (nodes[i].GetID() == id) {
+					return nodes[i];
 				}
 			}
 			
