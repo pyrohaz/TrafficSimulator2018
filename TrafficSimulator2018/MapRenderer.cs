@@ -18,6 +18,7 @@ namespace TrafficSimulator2018
 	{
 		//Panel drawing variables
 		const int NODE_RADIUS = 8;
+		const int PERSON_RADIUS = 10;
 		
 		Graphics panelgfx;
 		Font font;
@@ -34,6 +35,7 @@ namespace TrafficSimulator2018
 			panelgfx.Clear(Color.White);
 			DrawPaths();
 			DrawNodes();
+			DrawPeople();
 		}
 		
 		public void SetPanelRange(int XLeft, int XRight, int YTop, int YBottom){
@@ -84,6 +86,8 @@ namespace TrafficSimulator2018
 			for(int n = 0; n<Map.GetPaths().Count; n++){
 				double nxl1, nxl2, nyu1, nyu2;
 				double nx1, nx2, ny1, ny2;
+				double tx, ty;
+				double dist;
 				
 				if(Map.GetPaths()[n].GetNodes()[0] != null &&  Map.GetPaths()[n].GetNodes()[1] != null){
 					nx1 = Map.GetPaths()[n].GetNodes()[0].GetX();
@@ -97,8 +101,47 @@ namespace TrafficSimulator2018
 					nxl2 = xleft + (nx2 - xmin)*(double)(xright-xleft)/(xmax-xmin);
 					nyu2 = ytop + (ny2 - ymin)*(double)(ybottom-ytop)/(ymax-ymin);
 					
+					tx = (nxl1+nxl2)/2;
+					ty = (nyu1+nyu2)/2;
+					
+					dist = Map.GetPaths()[n].GetDistance();
+					
 					panelgfx.DrawLine(new Pen(Color.Aquamarine), (int)nxl1, (int)nyu1, (int)nxl2, (int)nyu2);
+					panelgfx.DrawString(dist.ToString("N1"), font, new SolidBrush(Color.DarkRed), (float)tx, (float)ty);
 				}
+			}
+		}
+		
+		void DrawPeople(){
+			//for(int n = 0; n<People.GetPeople().Count; n++){
+			
+			for(int n = 0; n<3; n++){
+				//Grab each persons position and draw its position
+				//Person person = People.GetPeople()[n];
+				//Path path = person.GetPath();
+				//double position = person.GetPosition();
+				
+				Path path = Map.GetPaths()[n];
+				
+				double nsx = path.GetNodes()[0].GetX();
+				double nsy = path.GetNodes()[0].GetY();
+				double nex = path.GetNodes()[1].GetX();
+				double ney = path.GetNodes()[1].GetY();
+				
+				double px, py, pxs, pys;
+				
+				position[n] += 0.2/path.GetDistance();
+				
+				if(position[n]>1.0) position[n] = 0.0;
+				
+				px = nsx + position[n]*(nex-nsx);
+				py = nsy + position[n]*(ney-nsy);
+				
+				//Scale person position to screen
+				pxs = xleft + (px - xmin)*(double)(xright-xleft)/(xmax-xmin) - NODE_RADIUS/2;
+				pys = ytop + (py - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
+				
+				panelgfx.FillEllipse(new SolidBrush(Color.Goldenrod), new RectangleF((float)pxs, (float)pys, (float)NODE_RADIUS, (float)NODE_RADIUS));
 			}
 		}
 	}

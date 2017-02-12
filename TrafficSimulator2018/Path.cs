@@ -55,5 +55,12 @@ namespace TrafficSimulator2018
 			return route_ID;
 		}
 		
+		public double GetDistance(){
+			return Math.Sqrt(Math.Pow(nodes[0].GetX() - nodes[1].GetX(), 2) + Math.Pow(nodes[0].GetY() - nodes[1].GetY(), 2));
+		}	
+		
+		public double GetTime(){
+			return GetDistance()/speed_limit;
+		}
 	}
 }
