@@ -7,6 +7,7 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using System.Collections.Generic;
 
 namespace TrafficSimulator2018
 {
@@ -20,6 +21,7 @@ namespace TrafficSimulator2018
 		
 		static People()
 		{
+			// Read in the people here
 		}
 		
 		public static List<People> GetPeople() {
