@@ -21,15 +21,17 @@ namespace TrafficSimulator2018
 		
 		static People()
 		{
-			// Read in the people here
+			people.Add(new Person(Map.GetNode(0), Map.GetNode(7)));
 		}
 		
+		// Returns a List of all Person objects.
 		public static List<Person> GetPeople() {
 			return people;
 		}
 		
+		// Adds a Person to the List of all Person objects.
 		public static void AddPerson(Person person) {
-			people.add(person);
+			people.Add(person);
 		}
 		
 	}
