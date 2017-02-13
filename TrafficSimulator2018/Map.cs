@@ -169,7 +169,48 @@ namespace TrafficSimulator2018
 			}
 			
 			return adjacent_nodes;
+		}
+		
+		/// <summary>
+		/// This method returns the Path that joins the two Nodes with the given IDs. If no such Path exists,
+		/// or one or more of the Nodes do not exist, this method returns null.
+		/// </summary>
+		/// <param name="node1_id"></param>
+		/// <param name="node2_id"></param>
+		/// <returns></returns>
+		public static Path GetPathWithNodes(int node1_id, int node2_id) {
+			Node node1 = GetNode(node1_id);
+			Node node2 = GetNode(node2_id);
 			
+			// If either of the Nodes are null, return null
+			if (node1 == null || node2 == null)
+				return null;
+			
+			return GetPathWithNodes(node1, node2);
+		}
+		
+		/// <summary>
+		/// This method returns the Path that joins the two given Nodes. If no such Path exists, this method
+		/// will return null.
+		/// </summary>
+		/// <param name="node1"></param>
+		/// <param name="node2"></param>
+		/// <returns></returns>
+		public static Path GetPathWithNodes(Node node1, Node node2) {
+			
+			// Checking that the same node is not given twice
+			if (node1 == node2)
+				return null;
+			
+			// Gets all of the paths from the node1 and tries to find the path that also contains node2
+			List<Path> paths_from_node = GetPathsFromNode(node1);
+			foreach(Path path in paths_from_node) {
+				Node [] path_nodes = path.GetNodes();
+				if (path_nodes[0] == node2 || path_nodes[1] == node2) {
+					return path;
+				}
+			}
+			return null; // If no path exists between node1 and node2, return null
 		}
 		
 	}
