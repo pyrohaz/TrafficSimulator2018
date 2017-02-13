@@ -13,16 +13,16 @@ using System.Diagnostics;
 namespace TrafficSimulator2018
 {
 	/// <summary>
-	/// Description of People.
+	/// Contains references to all of the different Person objects
+	/// that need to be rendered.
 	/// </summary>
 	public static class People
 	{
 		
 		static List<Person> people = new List<Person>();
 		
-		static People()
-		{
-			Debug.WriteLine("Doing something");
+		// Sets up all People objects
+		static People() {
 			people.Add(new Person(Map.GetNode(0), Map.GetNode(7)));
 		}
 		
