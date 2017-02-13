@@ -58,6 +58,7 @@
     <Compile Include="MapRenderer.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Path.cs" />
+    <Compile Include="People.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

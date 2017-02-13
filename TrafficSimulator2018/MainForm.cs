@@ -44,6 +44,9 @@ namespace TrafficSimulator2018
 			timer.Interval = 30;	//50ms update rate
 			timer.Enabled = true;
 			timer.Tick += TimerCallback;
+			
+			// TODO: Remove this stuff - this is just to test the Route generation
+			Debug.WriteLine(People.GetPerson(0).GetRoute().ToString());
 		}
 		
 		//Upon panel paint function, render to panel

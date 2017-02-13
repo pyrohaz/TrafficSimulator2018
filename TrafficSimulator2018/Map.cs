@@ -103,26 +103,27 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <param name="node"></param>
 		/// <returns></returns>
-		public static List<Path> GetPathsFromNode(Node node)
-		{
+		public static List<Path> GetPathsFromNode(Node node) {
 			
 			// Returns null if the node does not exist.
 			if (node == null)
 				return null;
 			
-			List<Path> attachedRoutes = new List<Path>();
+			List<Path> attached_paths = new List<Path>();
 			
 			// Loops through all paths to see if the node is a part of that path
-			for (int i = 0; i < paths.Count; i++) {
-				Node [] attachedNodes = paths[0].GetNodes();
+			foreach(Path path in paths) {
+				Node [] attached_nodes = path.GetNodes();
 				
-				for (int j = 0; i < attachedNodes.Length; i++) {
-					if (attachedNodes[j] == node) {
-						attachedRoutes.Add(paths[i]);
+				foreach (Node attached_node in attached_nodes) {
+					if (attached_node == node) {
+						attached_paths.Add(path);
 					}
 				}
+				
 			}
-			return attachedRoutes;
+			
+			return attached_paths;
 		}
 		
 		/// <summary>

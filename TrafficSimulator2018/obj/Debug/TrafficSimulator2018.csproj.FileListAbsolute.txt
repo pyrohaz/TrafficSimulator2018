@@ -6,3 +6,11 @@ D:\Users\harri\Documents\SharpDevelop Projects\TrafficSimulator2018\TrafficSimul
 D:\Users\harri\Documents\SharpDevelop Projects\TrafficSimulator2018\TrafficSimulator2018\obj\Debug\TrafficSimulator2018.csproj.GenerateResource.Cache
 D:\Users\harri\Documents\SharpDevelop Projects\TrafficSimulator2018\TrafficSimulator2018\obj\Debug\TrafficSimulator2018.exe
 D:\Users\harri\Documents\SharpDevelop Projects\TrafficSimulator2018\TrafficSimulator2018\obj\Debug\TrafficSimulator2018.pdb
+C:\Users\richa\Documents\My Projects\TrafficSimulator2018\TrafficSimulator2018\bin\Debug\TrafficSimulator2018.exe.config
+C:\Users\richa\Documents\My Projects\TrafficSimulator2018\TrafficSimulator2018\bin\Debug\TrafficSimulator2018.exe
+C:\Users\richa\Documents\My Projects\TrafficSimulator2018\TrafficSimulator2018\bin\Debug\TrafficSimulator2018.pdb
+C:\Users\richa\Documents\My Projects\TrafficSimulator2018\TrafficSimulator2018\obj\Debug\TrafficSimulator2018.csprojResolveAssemblyReference.cache
+C:\Users\richa\Documents\My Projects\TrafficSimulator2018\TrafficSimulator2018\obj\Debug\TrafficSimulator2018.MainForm.resources
+C:\Users\richa\Documents\My Projects\TrafficSimulator2018\TrafficSimulator2018\obj\Debug\TrafficSimulator2018.csproj.GenerateResource.Cache
+C:\Users\richa\Documents\My Projects\TrafficSimulator2018\TrafficSimulator2018\obj\Debug\TrafficSimulator2018.exe
+C:\Users\richa\Documents\My Projects\TrafficSimulator2018\TrafficSimulator2018\obj\Debug\TrafficSimulator2018.pdb
