@@ -110,7 +110,7 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <returns></returns>
 		public override string ToString() {
-			return "Node " + id + ":\nx: " + x + "\ny: " + y + "Visitor count: " + visitors + "\n\n";
+			return "Node " + id + ":\nx: " + x + "\ny: " + y + "\nVisitor count: " + visitors + "\n";
 		}
 		
 	}

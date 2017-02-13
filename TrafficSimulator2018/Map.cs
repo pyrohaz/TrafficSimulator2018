@@ -89,11 +89,11 @@ namespace TrafficSimulator2018
 		/// Returns all of the Paths that are connected to the specified node. This returns
 		/// null if the Node does not exist.
 		/// </summary>
-		/// <param name="nodeID"></param>
+		/// <param name="node_ID"></param>
 		/// <returns></returns>
-		public static List<Path> GetPathsFromNode(int nodeID)
+		public static List<Path> GetPathsFromNode(int node_ID)
 		{
-			Node node = GetNode(nodeID);
+			Node node = GetNode(node_ID);
 			return GetPathsFromNode(node);
 		}
 		
@@ -123,6 +123,53 @@ namespace TrafficSimulator2018
 				}
 			}
 			return attachedRoutes;
+		}
+		
+		/// <summary>
+		/// This method returns a List of all Nodes that are adjacent (i.e. at the other end of
+		/// a single Path) to a given Node by its ID.
+		/// If no Node exists with that ID, the List will be returned null.
+		/// </summary>
+		/// <param name="node_ID"></param>
+		/// <returns></returns>
+		public static List<Node> GetNodesAdjacentToNode(int node_ID) {
+			Node node = GetNode(node_ID);
+			return GetNodesAdjacentToNode(node);
+		}
+		
+		/// <summary>
+		/// This method returns a List of all Nodes that are adjacent (i.e. at the other end of
+		/// a single Path) to the given Node.
+		/// If the given Node is null, the List will be returned as null.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns></returns>
+		public static List<Node> GetNodesAdjacentToNode(Node node) {
+			
+			// Return null if the given node is null.
+			if (node == null)
+				return null;
+			
+			List<Path> paths_from_node = GetPathsFromNode(node);
+			List<Node> adjacent_nodes = new List<Node>();
+			
+			// Loops through all paths adjacent to a node
+			foreach (Path path in paths_from_node) {
+				Node [] path_nodes = path.GetNodes();
+				
+				// Each path always has two nodes. As we already know that these paths are adjacent,
+				// we only need to check if the first node is the given "origin" node. If it is the origin
+				// node, then the other node on the path must be the adjacent node and vice versa.
+				// This adjacent node is added to the List.
+				if (path_nodes[0] != node) {
+					adjacent_nodes.Add(path_nodes[0]);
+				} else {
+					adjacent_nodes.Add(path_nodes[1]);
+				}
+			}
+			
+			return adjacent_nodes;
+			
 		}
 		
 	}
