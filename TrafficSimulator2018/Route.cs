@@ -18,9 +18,14 @@ namespace TrafficSimulator2018
 	/// </summary>
 	public class Route
 	{
-		// TODO: Remove these unnecessary variables.
+
 		Node source_node, end_node;
+		
+		// Once the route has been calculated, this will contain the Nodes for the Route in the order that they occur.
 		List<Node> node_route;
+		
+		// Once the route has been calculated, this will contain the Paths for the Route in the order that they occur.
+		// The Nodes in each Path will not necessarily be in the correct order.
 		List<Path> path_route;
 		
 		/// <summary>
@@ -108,6 +113,23 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
+		/// This method returns a List of Nodes representing the Route, in the order that the Nodes will be travelled.
+		/// </summary>
+		/// <returns></returns>
+		public List<Node> GetNodeRoute() {
+			return node_route;
+		}
+		
+		/// <summary>
+		/// This method returns a List of Paths representing the Route, in the order that the Paths will be travelled.
+		/// Note that the Nodes for each Path will not necessarily be in the correct order.
+		/// </summary>
+		/// <returns></returns>
+		public List<Path> GetPathRoute() {
+			return path_route;
+		}
+		
+		/// <summary>
 		/// Sorts the gives List of NodesAndTimes by the time to get the the Node. The object passed by reference
 		/// to this function is changed itself, but this function also returns a reference to that object.
 		/// </summary>
@@ -146,47 +168,93 @@ namespace TrafficSimulator2018
 	}
 	
 	class NodeAndTime {
-		Node node;
-		double time;
+		Node node; // The Node
+		double time; // The cumulative (but shortest) time up to this Node
+		
+		// This bool will turn true when Routes to all adjacent Nodes have been analysed
 		bool adjacent_nodes_mapped = false;
 		
+		// A List of NodeAndTime objects that contain the shortest calculated route to the given Node
 		List<NodeAndTime> shortest_route_to_node = new List<NodeAndTime>();
+		
+		// These variables contain a List of Nodes or Paths that defines the fastest Route to the Node.
+		// These should only be utilised once the shortest path algorithm has finished.
 		List<Node> node_route;
 		List<Path> path_route;
 		
+		/// <summary>
+		/// Initialises a Node with whether it is the source Node or not, and sets the time to the Node
+		/// accordingly. Source nodes will have a time set to 0 (as it takes no time to get from source
+		/// to source). All other Nodes will be initialised to the maximum value.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <param name="source_node"></param>
 		public NodeAndTime(Node node, bool source_node) {
 			this.node = node;
 			time = source_node ? 0 : Double.MaxValue;
 		}
 		
+		/// <summary>
+		/// This method returns the Node.
+		/// </summary>
+		/// <returns></returns>
 		public Node GetNode() {
 			return node;
 		}
 		
+		/// <summary>
+		/// This method sets the minimum time to get to the Node.
+		/// </summary>
+		/// <param name="time"></param>
 		public void SetTime(double time) {
 			this.time = time;
 		}
 		
+		/// <summary>
+		/// This method returns a double that contains the minimum time to get the Node.
+		/// </summary>
+		/// <returns></returns>
 		public double GetTime() {
 			return time;
 		}
 		
+		/// <summary>
+		/// This method returns the current shortest route to the Node via a List of NodeAndTimes in order.
+		/// </summary>
+		/// <returns></returns>
 		public List<NodeAndTime> GetShortestRouteToNodeForCalc() {
 			return shortest_route_to_node;
 		}
 		
+		/// <summary>
+		/// This method sets the shortest route to the Node via a List of NodeAndTimes.
+		/// </summary>
+		/// <param name="shortest_route_to_node"></param>
 		public void SetShortestRouteToNode(List<NodeAndTime> shortest_route_to_node) {
 			this.shortest_route_to_node = shortest_route_to_node;
 		}
 		
+		/// <summary>
+		/// This method sets whether all adjacent Nodes have been analysed.
+		/// </summary>
+		/// <param name="adjacent_nodes_mapped"></param>
 		public void SetAdjacentNodesMapped(bool adjacent_nodes_mapped) {
 			this.adjacent_nodes_mapped = adjacent_nodes_mapped;
 		}
 		
+		/// <summary>
+		/// This method whether all adjacent Nodes have been analysed.
+		/// </summary>
+		/// <returns></returns>
 		public bool AdjacentNodesMapped() {
 			return adjacent_nodes_mapped;
 		}
 		
+		/// <summary>
+		/// This method converts the shortest route in a List of NodeAndTimes to a List of Nodes in
+		/// order.
+		/// </summary>
+		/// <returns></returns>
 		public List<Node> ConvertToListOfNodes() {
 			node_route = new List<Node>(shortest_route_to_node.Count + 1);
 			foreach (NodeAndTime node_and_time in shortest_route_to_node) {
@@ -196,6 +264,11 @@ namespace TrafficSimulator2018
 			return node_route;
 		}
 		
+		/// <summary>
+		/// This method converts the shortest route in a List of NodeAndTimes to a List of Paths in
+		/// order. Note that the Nodes in the Paths may not be in the correct order.
+		/// </summary>
+		/// <returns></returns>
 		public List<Path> ConvertToListOfPaths() {
 			if (node_route == null)
 				ConvertToListOfNodes();
@@ -209,6 +282,10 @@ namespace TrafficSimulator2018
 			return path_route;
 		}
 		
+		/// <summary>
+		/// This method returns a string that represents the NodeAndTime.
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString() {
 			return "Node " + node.GetID() + "\nTime: " + time + "\n";
 		}
