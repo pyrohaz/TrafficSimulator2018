@@ -12,16 +12,12 @@ using System.Threading;
 
 namespace TrafficSimulator2018
 {
-	/// <summary>
-	/// Description of MapRenderer.
-	/// </summary>
 	public class MapRenderer
 	{
 		//Panel drawing variables
 		const int NODE_RADIUS = 8;
-		const int PERSON_RADIUS = 10;
+		const int PERSON_RADIUS = 20;
 		
-		Graphics panelgfx;
 		Font font;
 		
 		int xleft, xright, ytop, ybottom;
@@ -30,17 +26,17 @@ namespace TrafficSimulator2018
 		public MapRenderer()
 		{
 			font = new Font("Calibri", 12);
+			CalculateNodeParameters();
 		}
 		
+		//Render all parts of the panel
 		public void Render(Graphics g){
-			//panelgfx.Clear(Color.White);
-			panelgfx = g;
-			RemovePeople();
-			DrawPaths();
-			DrawNodes();
-			DrawPeople();
+			DrawPaths(g);
+			DrawNodes(g);
+			DrawPeople(g);
 		}
 		
+		//Set internal panel range parameters (minimum left, right, top and bottom used within panel)
 		public void SetPanelRange(int XLeft, int XRight, int YTop, int YBottom){
 			xleft = XLeft;
 			xright = XRight;
@@ -48,9 +44,10 @@ namespace TrafficSimulator2018
 			ybottom = YBottom;
 		}
 		
-		public void CalculateNodeData(){
+		//Find minimum and maximum node positions - required for fitting all data within the panel
+		public void CalculateNodeParameters(){
 			
-			//Find smallest and largest for scales
+			//Find smallest and largest x and y values
 			xmin = double.MaxValue;
 			xmax = double.MinValue;
 			ymin = double.MaxValue;
@@ -64,7 +61,8 @@ namespace TrafficSimulator2018
 			}
 		}
 		
-		void DrawNodes(){
+		//Draw all nodes to the panel - scaled. Includes node ID
+		void DrawNodes(Graphics panelgfx){
 			//Plot all nodes on panel
 			Brush b = new SolidBrush(Color.Black);
 			
@@ -74,14 +72,13 @@ namespace TrafficSimulator2018
 				nxl = xleft + (Map.GetNodes()[n].GetX() - xmin)*(double)(xright-xleft)/(xmax-xmin) - NODE_RADIUS/2;
 				nyu = ytop + (Map.GetNodes()[n].GetY() - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
 				
-				//Debug.WriteLine(nxl + " " + nyu);
-				
 				panelgfx.FillEllipse(b, new RectangleF((float)nxl, (float)nyu, NODE_RADIUS, NODE_RADIUS));
 				panelgfx.DrawString(Map.GetNodes()[n].GetID().ToString(), font, new SolidBrush(Color.Blue), (float)nxl+NODE_RADIUS/2, (float)nyu+NODE_RADIUS/2);
 			}
 		}
 		
-		void DrawPaths(){
+		//Draw all paths between nodes with the path length
+		void DrawPaths(Graphics panelgfx){
 			for(int n = 0; n<Map.GetPaths().Count; n++){
 				double nxl1, nxl2, nyu1, nyu2;
 				double nx1, nx2, ny1, ny2;
@@ -111,33 +108,13 @@ namespace TrafficSimulator2018
 			}
 		}
 		
-		double [] position = {0,0,0}, poslast = {0,0,0};
-		void RemovePeople(){
-			for(int n = 0; n<3; n++){
-				Path path = Map.GetPaths()[n];
-				
-				double nsx = path.GetNodes()[0].GetX();
-				double nsy = path.GetNodes()[0].GetY();
-				double nex = path.GetNodes()[1].GetX();
-				double ney = path.GetNodes()[1].GetY();
-				double px, py, pxs, pys;
-				
-				px = nsx + poslast[n]*(nex-nsx);
-				py = nsy + poslast[n]*(ney-nsy);
-				
-				//Scale person position to screen
-				pxs = xleft + (px - xmin)*(double)(xright-xleft)/(xmax-xmin) - NODE_RADIUS/2;
-				pys = ytop + (py - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
-				
-				panelgfx.FillEllipse(new SolidBrush(Color.White), new RectangleF((float)pxs, (float)pys, (float)NODE_RADIUS, (float)NODE_RADIUS));
-			}
-		}
-		
-		void DrawPeople(){
+		//Draw all people and their positions along the line (linearly interpolated)
+		static double position = 0;
+		void DrawPeople(Graphics panelgfx){
 			//for(int n = 0; n<People.GetPeople().Count; n++){
 			
-			for(int n = 0; n<3; n++){
-				//Grab each persons position and draw its position
+			for(int n = 0; n<1; n++){
+				//Grab each persons position and draw its on the corresponding line
 				//Person person = People.GetPeople()[n];
 				//Path path = person.GetPath();
 				//double position = person.GetPosition();
@@ -151,19 +128,20 @@ namespace TrafficSimulator2018
 				
 				double px, py, pxs, pys;
 				
-				poslast[n] = position[n];
-				position[n] += 0.2/path.GetDistance();
+				//Test positions
+				position += 0.2/path.GetDistance();
+				if(position>1.0) position = 0.0;
 				
-				if(position[n]>1.0) position[n] = 0.0;
-				
-				px = nsx + position[n]*(nex-nsx);
-				py = nsy + position[n]*(ney-nsy);
+				//Linearly interpolate position on line
+				px = nsx + position*(nex-nsx);
+				py = nsy + position*(ney-nsy);
 				
 				//Scale person position to screen
 				pxs = xleft + (px - xmin)*(double)(xright-xleft)/(xmax-xmin) - NODE_RADIUS/2;
 				pys = ytop + (py - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
 				
-				panelgfx.FillEllipse(new SolidBrush(Color.Goldenrod), new RectangleF((float)pxs, (float)pys, (float)NODE_RADIUS, (float)NODE_RADIUS));
+				//Draw person
+				panelgfx.FillEllipse(new SolidBrush(Color.DodgerBlue), new RectangleF((float)pxs, (float)pys, (float)NODE_RADIUS, (float)NODE_RADIUS));
 			}
 		}
 	}
