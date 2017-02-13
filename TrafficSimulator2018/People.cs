@@ -24,19 +24,28 @@ namespace TrafficSimulator2018
 			people.Add(new Person(Map.GetNode(0), Map.GetNode(7)));
 		}
 		
-		// Returns a List of all Person objects.
+		/// <summary>
+		/// Returns a List<Person> of all Person objects.
+		/// </summary>
+		/// <returns></returns>
 		public static List<Person> GetPeople() {
 			return people;
 		}
 		
-		// Adds a Person to the List of all Person objects.
+		/// <summary>
+		/// Adds a Person object the the List of all Person objects.
+		/// </summary>
+		/// <param name="person"></param>
 		public static void AddPerson(Person person) {
 			people.Add(person);
 		}
-		
-		// Returns a string that describes the people objects.
-		public static string ToString() {
-			return "People:\nContains " + people.Count + " Persons.\n\n";
+	
+		/// <summary>
+		/// Returns an int representing the number of People currently stored.
+		/// </summary>
+		/// <returns></returns>
+		public static int GetNumberOfPeople() {
+			return people.Count;
 		}
 		
 	}
