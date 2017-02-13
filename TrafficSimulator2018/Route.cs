@@ -12,12 +12,23 @@ using System.Collections.Generic;
 namespace TrafficSimulator2018
 {
 	/// <summary>
-	/// Description of Route.
+	/// A Route is contains the Nodes and Paths required to go from a start Node to
+	/// an end Node via the shortest possible path.
 	/// </summary>
 	public class Route
 	{
+		// TODO: Remove these unnecessary variables.
+		Node start_node, end_node;
 		
+		/// <summary>
+		/// Initialises a route by giving a start and end node.
+		/// </summary>
+		/// <param name="start_node"></param>
+		/// <param name="end_node"></param>
 		public Route(Node start_node, Node end_node) {
+			
+			this.start_node = start_node;
+			this.end_node = end_node;
 			
 			List<Node> nodes = Map.GetNodes();
 			List<NodeAndTime> nodesAndTimes = new List<NodeAndTime>(nodes.Count);
@@ -28,15 +39,29 @@ namespace TrafficSimulator2018
 			
 		}
 		
+		/// <summary>
+		/// Returns a string that represents the Route.
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString() {
+			return start_node.GetID() + " to " + end_node.GetID() + "\n";
+		} 
+		
 	}
 	
-	struct NodeAndTime {
+	class NodeAndTime {
 		Node node;
 		double time;
+		
+		List<Path> shortest_routes_to_nodes = new List<Path>();
 		
 		public NodeAndTime(Node node) {
 			this.node = node;
 			time = Double.MaxValue;
+		}
+		
+		public List<Path> GetShortestRoute() {
+			return null;
 		}
 		
 	}

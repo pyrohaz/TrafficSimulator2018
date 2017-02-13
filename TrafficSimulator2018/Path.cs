@@ -98,7 +98,7 @@ namespace TrafficSimulator2018
 		/// <returns></returns>
 		public override string ToString() {
 			return "Path " + path_ID + ":\nNode 1: " + nodes[0].GetID() + "\nNode 2: " + nodes[1].GetID() + "\nSpeed limit: " + GetSpeedLimit() +
-				"\nDistance between nodes: " + distance_between_nodes + "\nTime between nodes (s): " + GetTime() + "\n\n";
+				"\nDistance between nodes: " + distance_between_nodes + "\nTime between nodes (s): " + GetTime() + "\n";
 		}
 	}
 }
