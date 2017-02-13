@@ -20,7 +20,7 @@ namespace TrafficSimulator2018
 	{
 		// TODO: Remove these unnecessary variables.
 		Node source_node, end_node;
-		List<NodeAndTime> nodesAndTimes = new List<NodeAndTime>();
+		List<NodeAndTime> nodes_and_times = new List<NodeAndTime>();
 		
 		/// <summary>
 		/// Initialises a route by giving a start and end node.
@@ -37,43 +37,39 @@ namespace TrafficSimulator2018
 			// Setting the initial lengths (times) to get to each node from the source node
 			foreach (Node node in nodes) {
 				if (node == source_node) {
-					nodesAndTimes.Add(new NodeAndTime(node, true));
+					nodes_and_times.Add(new NodeAndTime(node, true));
 				} else {
-					nodesAndTimes.Add(new NodeAndTime(node, false));
+					nodes_and_times.Add(new NodeAndTime(node, false));
 				}
 			}
-			
-			// Sort to ensure that the source Node is at the top
-			// Get the routes to all of the adjacent nodes. Store route taken to get there.
-			// Set that route such that it has already been mapped.
-			// Sort the nodesAndTimesArray
-			// Pick the next Node that hasn't been mapped...
+	
+						
+			// Implementing Dijkstra's algorithm:
 			
 			bool complete = false;
 			
 			while (!complete) {
 				
-				// Sort to ensure that the source Node is at the top
-				Sort(nodesAndTimes);
+				// Sort to ensure that the nearest (by time) nodes to the source node are at the top of the List
+				Sort(nodes_and_times);
 				
 				// Finding the next node that has not been mapped
 				NodeAndTime analysis_node = null;
-				foreach (NodeAndTime nodeAndTime in nodesAndTimes) {
-					if (!nodeAndTime.AdjacentNodesMapped()) {
-						analysis_node = nodeAndTime;
+				foreach (NodeAndTime node_and_time in nodes_and_times) {
+					if (!node_and_time.AdjacentNodesMapped()) {
+						analysis_node = node_and_time;
 						break;
 					}
 				}
 				
 				// If all nodes have been mapped, then the analysis_node was not set.
 				// Hence we need not run the rest of the loop and we can finish the while loop.
-				if (analysis_node == null) {
+				if (analysis_node == null || analysis_node.GetNode() == end_node) {
 					complete = true;
 				} else {
+					Debug.WriteLine("Analysing node " + analysis_node.GetNode().GetID());
 					// Get adjacent nodes
 					List<Node> adj_nodes_temp = Map.GetNodesAdjacentToNode(analysis_node.GetNode());
-					
-					Debug.WriteLine("Nodes adjacent to Node " + analysis_node.GetNode().GetID() + ":");
 					
 					foreach(Node node in adj_nodes_temp) {
 						
@@ -83,7 +79,7 @@ namespace TrafficSimulator2018
 						// If the time lower than it would be taking the previous route here, change that NodeAndTime object to come through this way instead
 						NodeAndTime previous_node_and_time = GetNodeAndTime(node);
 						if (new_time < previous_node_and_time.GetTime()) {
-							List<NodeAndTime> new_shortest_route = analysis_node.GetShortestRouteToNode();
+							List<NodeAndTime> new_shortest_route = new List<NodeAndTime>(analysis_node.GetShortestRouteToNode());
 							new_shortest_route.Add(analysis_node);
 							previous_node_and_time.SetShortestRouteToNode(new_shortest_route);
 							previous_node_and_time.SetTime(new_time);
@@ -106,13 +102,15 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
-		/// Sorts the gives List of NodesAndTimes by the time to get the the Node.
+		/// Sorts the gives List of NodesAndTimes by the time to get the the Node. The object passed by reference
+		/// to this function is changed itself, but this function also returns a reference to that object.
 		/// </summary>
-		/// <param name="nodesAndTimes"></param>
-		void Sort(List<NodeAndTime> nodesAndTimes) {
-			nodesAndTimes.Sort(delegate(NodeAndTime n1, NodeAndTime n2) {
+		/// <param name="nodes_and_times_to_sort"></param>
+		List<NodeAndTime> Sort(List<NodeAndTime> nodes_and_times_to_sort) {
+			nodes_and_times_to_sort.Sort(delegate(NodeAndTime n1, NodeAndTime n2) {
 					return n1.GetTime().CompareTo(n2.GetTime());
 			});
+			return nodes_and_times_to_sort;
 		}
 		
 		/// <summary>
@@ -122,9 +120,9 @@ namespace TrafficSimulator2018
 		/// <param name="node"></param>
 		/// <returns></returns>
 		NodeAndTime GetNodeAndTime(Node node) {
-			foreach(NodeAndTime nodeAndTime in nodesAndTimes) {
-				if (nodeAndTime.GetNode() == node) {
-					return nodeAndTime;
+			foreach(NodeAndTime node_and_time in nodes_and_times) {
+				if (node_and_time.GetNode() == node) {
+					return node_and_time;
 				}
 			}
 			return null;
