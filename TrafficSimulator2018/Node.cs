@@ -67,5 +67,10 @@ namespace TrafficSimulator2018
 			return y;
 		}
 		
+		// Returns some text that describes the node.
+		public override string ToString() {
+			return "Node " + id + ":\nx: " + x + "\ny: " + y + "Visitor count: " + visitors + "\n\n";
+		}
+		
 	}
 }

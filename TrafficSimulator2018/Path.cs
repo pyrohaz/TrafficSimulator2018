@@ -18,7 +18,7 @@ namespace TrafficSimulator2018
 		
 		static int next_route_ID = 0;
 		
-		int route_ID = next_route_ID++;
+		int path_ID = next_route_ID++;
 		Node [] nodes = new Node[2];
 		double speed_limit = 0;
 		double distance_between_nodes = 0;
@@ -38,7 +38,7 @@ namespace TrafficSimulator2018
 		
 		// Returns the ID of the path.
 		public int GetID() {
-			return route_ID;
+			return path_ID;
 		}
 		
 		// Returns a double representing the speed limit of the path
@@ -52,19 +52,25 @@ namespace TrafficSimulator2018
 		}
 		
 		// Returns the ID for the route
-		public int GetRouteID() {
-			return route_ID;
+		public int GetPathID() {
+			return path_ID;
 		}
 		
 		// Returns the distance between the two end nodes of the path.
-		public double GetDistance(){
+		public double GetDistance() {
 			return distance_between_nodes;
 		}	
 		
 		// Returns the length of time (in s) that it should take to travel from one end of this
 		// node to the other.
-		public double GetTime(){
+		public double GetTime() {
 			return GetDistance()/speed_limit;
+		}
+		
+		// Returns some text that describes the path
+		public override string ToString() {
+			return "Path " + path_ID + ":\nNode 1: " + nodes[0].GetID() + "\nNode 2: " + nodes[1].GetID() + "\nSpeed limit: " + GetSpeedLimit() +
+				"\nDistance between nodes: " + distance_between_nodes + "\nTime between nodes (s): " + GetTime() + "\n\n";
 		}
 	}
 }
