@@ -100,10 +100,12 @@ namespace TrafficSimulator2018
 					tx = (nxl1+nxl2)/2;
 					ty = (nyu1+nyu2)/2;
 					
-					dist = Map.GetPaths()[n].GetDistance();
+//					dist = Map.GetPaths()[n].GetDistance();
+					double time = Map.GetPaths()[n].GetTime();
 					
 					panelgfx.DrawLine(new Pen(Color.Aquamarine), (int)nxl1, (int)nyu1, (int)nxl2, (int)nyu2);
-					panelgfx.DrawString(dist.ToString("N1"), font, new SolidBrush(Color.DarkRed), (float)tx, (float)ty);
+//					panelgfx.DrawString(dist.ToString("N1"), font, new SolidBrush(Color.DarkRed), (float)tx, (float)ty);
+					panelgfx.DrawString(time.ToString("N1")+"s", font, new SolidBrush(Color.DarkRed), (float)tx, (float)ty);
 				}
 			}
 		}
