@@ -57,6 +57,7 @@ namespace TrafficSimulator2018
 			this.Controls.Add(this.panel);
 			this.Name = "MainForm";
 			this.Text = "TrafficSimulator2018";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormFormClosing);
 			this.ResumeLayout(false);
 
 		}

@@ -19,7 +19,7 @@ namespace TrafficSimulator2018
 	{
 		const int PANEL_EDGE = 50;
 		MapRenderer maprndr;
-		Thread render;
+		Thread thrender;
 		
 		public MainForm()
 		{
@@ -30,10 +30,11 @@ namespace TrafficSimulator2018
 			maprndr.SetPanelRange(PANEL_EDGE, panel.Size.Width-PANEL_EDGE, PANEL_EDGE, panel.Size.Height-PANEL_EDGE);
 			maprndr.CalculateNodeData();
 			
-			render = new Thread(new ThreadStart(this.RenderThread));
-			render.Start();
-			while(!render.IsAlive){}
+			thrender = new Thread(new ThreadStart(this.RenderThread));
+			thrender.Start();
+			while(!thrender.IsAlive){}
 		}
+		
 		void PanelPaint(object sender, PaintEventArgs e)
 		{
 			maprndr.Render(e.Graphics);
@@ -46,6 +47,11 @@ namespace TrafficSimulator2018
 				panel.Invalidate();
 				Thread.Sleep(50);
 			}
+		}
+		void MainFormFormClosing(object sender, FormClosingEventArgs e)
+		{
+			thrender.Abort();
+			thrender.Join();
 		}
 	}
 }
