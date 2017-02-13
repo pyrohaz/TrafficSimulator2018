@@ -24,6 +24,7 @@ namespace TrafficSimulator2018
 		
 		string name;
 		Path current_path; // TODO: implement the current path
+		Node last_node_passed;
 		double distance_along_path = 0;
 		Route route;
 		
@@ -45,6 +46,7 @@ namespace TrafficSimulator2018
 		public Person(string name, Node start_node, Node end_node) {
 			this.name = name;
 			route = new Route(start_node, end_node);
+			last_node_passed = start_node;
 		}
 		
 		/// <summary>
@@ -86,6 +88,18 @@ namespace TrafficSimulator2018
 		/// <returns></returns>
 		public Route GetRoute() {
 			return route;
+		}
+		
+		/// <summary>
+		/// This method will update the position of the Person. The number of seconds since the
+		/// last update is required in order to calculate the Person's new position. If the
+		/// Person reaches the next part of their Path, their current_path and last_node_passed
+		/// values will be updated. If the Person reaches the end of their route, the Person will
+		/// be deleted from the List in Persons.
+		/// </summary>
+		/// <param name="seconds_since_last_update"></param>
+		public void update(double seconds_since_last_update) {
+			// TODO: implement the update method
 		}
 		
 		/// <summary>
