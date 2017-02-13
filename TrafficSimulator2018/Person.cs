@@ -17,9 +17,11 @@ namespace TrafficSimulator2018
 	/// </summary>
 	public class Person
 	{
-		static int next_person_id = 0;
+		// Initialising ID. The next_id variable is incremented every time a new instance of Person is created.
+		// Hence then each new Person gets a new ID.
+		static int next_id = 0;
+		int id = next_id++;
 		
-		int person_ID = next_person_id++;
 		string name;
 		Path current_path; // TODO: implement the current path
 		double distance_along_path = 0;
@@ -74,8 +76,8 @@ namespace TrafficSimulator2018
 		/// Returns an int representing the ID of the person.
 		/// </summary>
 		/// <returns></returns>
-		public int GetPersonID() {
-			return next_person_id;
+		public int GetID() {
+			return id;
 		}
 		
 		/// <summary>
@@ -91,7 +93,7 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <returns></returns>
 		public override string ToString() {
-			return "Person " + person_ID + ":\nName: " + name + "\nCurrent Path: " + current_path.GetID() + "\nDistance along path: " + distance_along_path + "\n\n";
+			return "Person " + id + ":\nName: " + name + "\nCurrent Path: " + current_path.GetID() + "\nDistance along path: " + distance_along_path + "\n\n";
 		}
 		
 	}
