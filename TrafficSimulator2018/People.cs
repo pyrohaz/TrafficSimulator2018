@@ -23,7 +23,7 @@ namespace TrafficSimulator2018
 		
 		// Sets up all People objects
 		static People() {
-			people.Add(new Person(Map.GetNode(0), Map.GetNode(7)));
+			people.Add(new Person(Map.GetNode(7), Map.GetNode(5)));
 		}
 		
 		/// <summary>

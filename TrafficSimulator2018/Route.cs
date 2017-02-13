@@ -20,7 +20,8 @@ namespace TrafficSimulator2018
 	{
 		// TODO: Remove these unnecessary variables.
 		Node source_node, end_node;
-		List<NodeAndTime> nodes_and_times = new List<NodeAndTime>();
+		List<Node> node_route;
+		List<Path> path_route;
 		
 		/// <summary>
 		/// Initialises a route by giving a start and end node.
@@ -28,6 +29,8 @@ namespace TrafficSimulator2018
 		/// <param name="source_node"></param>
 		/// <param name="end_node"></param>
 		public Route(Node source_node, Node end_node) {
+			
+			List<NodeAndTime> nodes_and_times = new List<NodeAndTime>();
 			
 			this.source_node = source_node;
 			this.end_node = end_node;
@@ -77,9 +80,9 @@ namespace TrafficSimulator2018
 						double new_time = Map.GetPathWithNodes(analysis_node.GetNode(), node).GetTime() + analysis_node.GetTime();
 						
 						// If the time lower than it would be taking the previous route here, change that NodeAndTime object to come through this way instead
-						NodeAndTime previous_node_and_time = GetNodeAndTime(node);
+						NodeAndTime previous_node_and_time = GetNodeAndTime(node, nodes_and_times);
 						if (new_time < previous_node_and_time.GetTime()) {
-							List<NodeAndTime> new_shortest_route = new List<NodeAndTime>(analysis_node.GetShortestRouteToNode());
+							List<NodeAndTime> new_shortest_route = new List<NodeAndTime>(analysis_node.GetShortestRouteToNodeForCalc());
 							new_shortest_route.Add(analysis_node);
 							previous_node_and_time.SetShortestRouteToNode(new_shortest_route);
 							previous_node_and_time.SetTime(new_time);
@@ -87,17 +90,20 @@ namespace TrafficSimulator2018
 					}
 					analysis_node.SetAdjacentNodesMapped(true);
 				}
-				
 			}
 			
+			// Converting the array of NodeAndTime object to just Nodes.
+			NodeAndTime end_node_and_time = GetNodeAndTime(end_node, nodes_and_times);
+			node_route = end_node_and_time.ConvertToListOfNodes();
+			path_route = end_node_and_time.ConvertToListOfPaths();
+			
+			// TODO: Remove print lines
 			Debug.WriteLine("Optimum route from " + source_node.GetID() + " to " + end_node.GetID() + ":");
-			List<NodeAndTime> route = GetNodeAndTime(end_node).GetShortestRouteToNode();
-			foreach (NodeAndTime nodeAndTime in route) {
-				Debug.Write(nodeAndTime.GetNode().GetID() + ", ");
+			foreach (Node node in node_route) {
+				Debug.WriteLine(node.GetID());
 			}
-			Debug.WriteLine(GetNodeAndTime(end_node).GetNode().GetID());
 			
-			Debug.WriteLine("Time = " + GetNodeAndTime(end_node).GetTime());
+			Debug.WriteLine("Time = " + GetNodeAndTime(end_node, nodes_and_times).GetTime());
 			
 		}
 		
@@ -118,8 +124,9 @@ namespace TrafficSimulator2018
 		/// does not exist within the nodesAndTimes List, then this returns null.
 		/// </summary>
 		/// <param name="node"></param>
+		/// <param name="nodes_and_times"></param>
 		/// <returns></returns>
-		NodeAndTime GetNodeAndTime(Node node) {
+		NodeAndTime GetNodeAndTime(Node node, List<NodeAndTime> nodes_and_times) {
 			foreach(NodeAndTime node_and_time in nodes_and_times) {
 				if (node_and_time.GetNode() == node) {
 					return node_and_time;
@@ -144,6 +151,8 @@ namespace TrafficSimulator2018
 		bool adjacent_nodes_mapped = false;
 		
 		List<NodeAndTime> shortest_route_to_node = new List<NodeAndTime>();
+		List<Node> node_route;
+		List<Path> path_route;
 		
 		public NodeAndTime(Node node, bool source_node) {
 			this.node = node;
@@ -162,7 +171,7 @@ namespace TrafficSimulator2018
 			return time;
 		}
 		
-		public List<NodeAndTime> GetShortestRouteToNode() {
+		public List<NodeAndTime> GetShortestRouteToNodeForCalc() {
 			return shortest_route_to_node;
 		}
 		
@@ -176,6 +185,28 @@ namespace TrafficSimulator2018
 		
 		public bool AdjacentNodesMapped() {
 			return adjacent_nodes_mapped;
+		}
+		
+		public List<Node> ConvertToListOfNodes() {
+			node_route = new List<Node>(shortest_route_to_node.Count + 1);
+			foreach (NodeAndTime node_and_time in shortest_route_to_node) {
+				node_route.Add(node_and_time.GetNode());
+			}
+			node_route.Add(GetNode());
+			return node_route;
+		}
+		
+		public List<Path> ConvertToListOfPaths() {
+			if (node_route == null)
+				ConvertToListOfNodes();
+			
+			path_route = new List<Path>(node_route.Count-1);
+			
+			for (int i = 0; i < node_route.Count-1; i++) {
+				path_route.Add(Map.GetPathWithNodes(node_route[i], node_route[i+1]));
+			}
+			
+			return path_route;
 		}
 		
 		public override string ToString() {
