@@ -50,8 +50,7 @@ namespace TrafficSimulator2018
 		}
 		
 		//Upon panel paint function, render to panel
-		void PanelPaint(object sender, PaintEventArgs e)
-		{
+		void PanelPaint(object sender, PaintEventArgs e) {
 			maprndr.Render(e.Graphics);
 		}
 		
@@ -61,8 +60,7 @@ namespace TrafficSimulator2018
 			return;
 		}
 		
-		void MainFormFormClosing(object sender, FormClosingEventArgs e)
-		{
+		void MainFormFormClosing(object sender, FormClosingEventArgs e) {
 		}
 	}
 }
