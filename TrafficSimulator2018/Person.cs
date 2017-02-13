@@ -19,7 +19,7 @@ namespace TrafficSimulator2018
 		
 		int person_ID = next_person_id++;
 		string name;
-		Path current_path;
+		Path current_path; // TODO: implement the current path
 		double distance_along_path = 0;
 		Route route;
 		
@@ -58,6 +58,11 @@ namespace TrafficSimulator2018
 		// Returns the route for the person.
 		public Route GetRoute() {
 			return route;
+		}
+		
+		// Returns some text that describes the person.
+		public override string ToString() {
+			return "Person " + person_ID + ":\nName: " + name + "\nCurrent Path: " + current_path.GetID() + "\nDistance along path: " + distance_along_path + "\n\n";
 		}
 		
 	}

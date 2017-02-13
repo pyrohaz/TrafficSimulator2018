@@ -34,5 +34,10 @@ namespace TrafficSimulator2018
 			people.Add(person);
 		}
 		
+		// Returns a string that describes the people objects.
+		public static string ToString() {
+			return "People:\nContains " + people.Count + " Persons.\n\n";
+		}
+		
 	}
 }
