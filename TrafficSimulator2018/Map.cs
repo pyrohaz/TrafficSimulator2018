@@ -13,7 +13,9 @@ using System.Diagnostics;
 namespace TrafficSimulator2018
 {
 	/// <summary>
-	/// Description of Map.
+	/// The Map class contains all of the Nodes and Paths that make up the "map".
+	/// The Nodes and Paths are set up on first use of the class and should then
+	/// be accessed statically.
 	/// </summary>
 	public static class Map
 	{
@@ -49,17 +51,28 @@ namespace TrafficSimulator2018
 			paths.Add(new Path(GetNode(6), GetNode(7), 0.3));
 		}
 		
-		// Returns a List<Route> object that contains all of the routes in the map.
+		/// <summary>
+		/// Returns a List<Path> object that contains all of the routes in the map.
+		/// </summary>
+		/// <returns></returns>
 		public static List<Path> GetPaths() {
 			return paths;
 		}
 		
+		/// <summary>
+		/// Returns a List<Node> object that contains all of the routes in the map.
+		/// </summary>
+		/// <returns></returns>
 		public static List<Node> GetNodes() {
 			return nodes;
 		}
 		
-		// Returns the node with the corresponding id. If no node exists with that ID, a message is displayed
-		// and a null pointer is returned.
+		/// <summary>
+		/// Returns the Node with the corresponding id. If no Node exists with that ID, a message is displayed
+		/// and a null pointer is returned.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public static Node GetNode(int id) {
 			for (int i = 0; i < nodes.Count; i++) {
 				if (nodes[i].GetID() == id) {
@@ -72,16 +85,24 @@ namespace TrafficSimulator2018
 			return null;
 		}
 		
-		// Returns all of the routes that are connected to the specified node. This returns
-		// null if the node does not exit.
+		/// <summary>
+		/// Returns all of the Paths that are connected to the specified node. This returns
+		/// null if the Node does not exist.
+		/// </summary>
+		/// <param name="nodeID"></param>
+		/// <returns></returns>
 		public static List<Path> GetPathsFromNode(int nodeID)
 		{
 			Node node = GetNode(nodeID);
 			return GetPathsFromNode(node);
 		}
 		
-		// Returns all of the routes that are connected to the specified node. This returns
-		// null if the node does not exit.
+		/// <summary>
+		/// Returns all of the Paths that are connected to the specified Node. This returns
+		/// null if the Node does not exist.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns></returns>
 		public static List<Path> GetPathsFromNode(Node node)
 		{
 			
