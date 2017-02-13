@@ -11,31 +11,41 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Threading;
 
 namespace TrafficSimulator2018
-{	
+{
 	public partial class MainForm : Form
 	{
 		const int PANEL_EDGE = 50;
-		Graphics g;
 		MapRenderer maprndr;
+		Thread render;
 		
 		public MainForm()
 		{
 			InitializeComponent();
 			
+			base.DoubleBuffered = true;
 			maprndr = new MapRenderer();
-			
-			//Create panel graphics
-			g = panel.CreateGraphics();
-			maprndr.SetGFX(g);
 			maprndr.SetPanelRange(PANEL_EDGE, panel.Size.Width-PANEL_EDGE, PANEL_EDGE, panel.Size.Height-PANEL_EDGE);
 			maprndr.CalculateNodeData();
+			
+			//render = new Thread(new ThreadStart(this.RenderThread));
+			//render.Start();
+			//while(!render.IsAlive);
+		}
+		void PanelPaint(object sender, PaintEventArgs e)
+		{
+			maprndr.Render(e.Graphics);
 		}
 		
-		void PanelClick(object sender, EventArgs e)
-		{
-			maprndr.Render();
+		void RenderThread(){
+			while(true){
+				//maprndr.Render();
+				Debug.WriteLine("Inv");
+				panel.Invalidate();
+				Thread.Sleep(50);
+			}
 		}
 	}
 }

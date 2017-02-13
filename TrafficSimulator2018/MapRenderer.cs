@@ -8,6 +8,7 @@
  */
 using System;
 using System.Drawing;
+using System.Threading;
 
 namespace TrafficSimulator2018
 {
@@ -31,8 +32,10 @@ namespace TrafficSimulator2018
 			font = new Font("Calibri", 12);
 		}
 		
-		public void Render(){
-			panelgfx.Clear(Color.White);
+		public void Render(Graphics g){
+			//panelgfx.Clear(Color.White);
+			panelgfx = g;
+			RemovePeople();
 			DrawPaths();
 			DrawNodes();
 			DrawPeople();
@@ -59,10 +62,6 @@ namespace TrafficSimulator2018
 				if(Map.GetNodes()[n].GetY() < ymin) ymin = Map.GetNodes()[n].GetY();
 				else if(Map.GetNodes()[n].GetY() > ymax) ymax = Map.GetNodes()[n].GetY();
 			}
-		}
-		
-		public void SetGFX(Graphics Panelgfx){
-			panelgfx = Panelgfx;
 		}
 		
 		void DrawNodes(){
@@ -112,6 +111,28 @@ namespace TrafficSimulator2018
 			}
 		}
 		
+		double [] position = {0,0,0}, poslast = {0,0,0};
+		void RemovePeople(){
+			for(int n = 0; n<3; n++){
+				Path path = Map.GetPaths()[n];
+				
+				double nsx = path.GetNodes()[0].GetX();
+				double nsy = path.GetNodes()[0].GetY();
+				double nex = path.GetNodes()[1].GetX();
+				double ney = path.GetNodes()[1].GetY();
+				double px, py, pxs, pys;
+				
+				px = nsx + poslast[n]*(nex-nsx);
+				py = nsy + poslast[n]*(ney-nsy);
+				
+				//Scale person position to screen
+				pxs = xleft + (px - xmin)*(double)(xright-xleft)/(xmax-xmin) - NODE_RADIUS/2;
+				pys = ytop + (py - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
+				
+				panelgfx.FillEllipse(new SolidBrush(Color.White), new RectangleF((float)pxs, (float)pys, (float)NODE_RADIUS, (float)NODE_RADIUS));
+			}
+		}
+		
 		void DrawPeople(){
 			//for(int n = 0; n<People.GetPeople().Count; n++){
 			
@@ -130,6 +151,7 @@ namespace TrafficSimulator2018
 				
 				double px, py, pxs, pys;
 				
+				poslast[n] = position[n];
 				position[n] += 0.2/path.GetDistance();
 				
 				if(position[n]>1.0) position[n] = 0.0;
