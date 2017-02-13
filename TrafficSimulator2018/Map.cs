@@ -91,6 +91,7 @@ namespace TrafficSimulator2018
 			
 			List<Path> attachedRoutes = new List<Path>();
 			
+			// Loops through all paths to see if the node is a part of that path
 			for (int i = 0; i < paths.Count; i++) {
 				Node [] attachedNodes = paths[0].GetNodes();
 				
