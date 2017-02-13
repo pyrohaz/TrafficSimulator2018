@@ -30,9 +30,9 @@ namespace TrafficSimulator2018
 			maprndr.SetPanelRange(PANEL_EDGE, panel.Size.Width-PANEL_EDGE, PANEL_EDGE, panel.Size.Height-PANEL_EDGE);
 			maprndr.CalculateNodeData();
 			
-			//render = new Thread(new ThreadStart(this.RenderThread));
-			//render.Start();
-			//while(!render.IsAlive);
+			render = new Thread(new ThreadStart(this.RenderThread));
+			render.Start();
+			while(!render.IsAlive){}
 		}
 		void PanelPaint(object sender, PaintEventArgs e)
 		{
