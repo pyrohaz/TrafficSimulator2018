@@ -11,7 +11,8 @@ using System;
 namespace TrafficSimulator2018
 {
 	/// <summary>
-	/// Description of Path.
+	/// A Path is the "road" between two nodes. It has a defined speed limit. The length of the node is calculated
+	/// from the distance between the two nodes.
 	/// </summary>
 	public class Path
 	{
@@ -41,17 +42,17 @@ namespace TrafficSimulator2018
 			return path_ID;
 		}
 		
-		// Returns a double representing the speed limit of the path
+		// Returns a double representing the speed limit of the path.
 		public double GetSpeedLimit() {
 			return speed_limit;
 		}
 		
-		// Sets the speed limit of the path
+		// Sets the speed limit of the path.
 		public void SetSpeedLimit(double speed_limit) {
 			this.speed_limit = speed_limit;
 		}
 		
-		// Returns the ID for the route
+		// Returns the ID for the route.
 		public int GetPathID() {
 			return path_ID;
 		}
@@ -61,13 +62,13 @@ namespace TrafficSimulator2018
 			return distance_between_nodes;
 		}	
 		
-		// Returns the length of time (in s) that it should take to travel from one end of this
+		// Returns the length of time (in s) that it should take to travel from one end of this.
 		// node to the other.
 		public double GetTime() {
 			return GetDistance()/speed_limit;
 		}
 		
-		// Returns some text that describes the path
+		// Returns some text that describes the path.
 		public override string ToString() {
 			return "Path " + path_ID + ":\nNode 1: " + nodes[0].GetID() + "\nNode 2: " + nodes[1].GetID() + "\nSpeed limit: " + GetSpeedLimit() +
 				"\nDistance between nodes: " + distance_between_nodes + "\nTime between nodes (s): " + GetTime() + "\n\n";
