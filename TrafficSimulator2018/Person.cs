@@ -93,7 +93,8 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <returns></returns>
 		public override string ToString() {
-			return "Person " + id + ":\nName: " + name + "\nCurrent Path: " + current_path.GetID() + "\nDistance along path: " + distance_along_path + "\n\n";
+			return "Person " + id + ":\nName: " + name + "\n\n";
+			//return "Person " + id + ":\nName: " + name + "\nCurrent Path: " + current_path.GetID() + "\nDistance along path: " + distance_along_path + "\n\n";
 		}
 		
 	}
