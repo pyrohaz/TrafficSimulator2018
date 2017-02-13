@@ -47,7 +47,7 @@ namespace TrafficSimulator2018
 			this.panel.Name = "panel";
 			this.panel.Size = new System.Drawing.Size(732, 567);
 			this.panel.TabIndex = 0;
-			this.panel.Click += new System.EventHandler(this.PanelClick);
+			this.panel.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelPaint);
 			// 
 			// MainForm
 			// 
