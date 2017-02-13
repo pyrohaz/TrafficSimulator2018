@@ -11,7 +11,9 @@ using System;
 namespace TrafficSimulator2018
 {
 	/// <summary>
-	/// Description of Person.
+	/// A Person is an object that navigates between the Nodes, along the Paths. They will be initialised
+	/// at a Node, and have an desired end Node. Their Route will then be calculated so as to travel towards
+	/// their desired location.
 	/// </summary>
 	public class Person
 	{
@@ -23,44 +25,71 @@ namespace TrafficSimulator2018
 		double distance_along_path = 0;
 		Route route;
 		
-		// Creates a person with a start and end node. This will give the person a
-		// default name.
+		/// <summary>
+		/// Creates a person with a start and end node. This will give the person a
+		/// default name.
+		/// </summary>
+		/// <param name="start_node"></param>
+		/// <param name="end_node"></param>
 		public Person(Node start_node, Node end_node) : this("Steve", start_node, end_node) {
 		}
 		
-		// Creates a person with a start and end node and a name.
+		/// <summary>
+		/// Creates a person with a start and end node and a name.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="start_node"></param>
+		/// <param name="end_node"></param>
 		public Person(string name, Node start_node, Node end_node) {
 			this.name = name;
 			route = new Route(start_node, end_node);
 		}
 		
-		// Gets the path that the user is currently on.
+		/// <summary>
+		/// Returns the Path that the user is currently on.
+		/// </summary>
+		/// <returns></returns>
 		public Path GetCurrentPath() {
 			return current_path;
 		}
 		
-		// Returns the distance along the path from the first node in the path array
-		// to the second (note that it's not in the direction of travel).
+		/// <summary>
+		/// Returns a double representing the distance along the path from the first node
+		/// in the path array to the second (note that it's not in the direction of travel).
+		/// </summary>
+		/// <returns></returns>
 		public double GetDistanceAlongPath() {
 			return distance_along_path;
 		}
 		
-		// Returns the name of the person.
+		/// <summary>
+		/// Returns a string representing the name of the Person.
+		/// </summary>
+		/// <returns></returns>
 		public string GetName() {
 			return name;
 		}
 		
-		// Returns the ID of the person.
+		/// <summary>
+		/// Returns an int representing the ID of the person.
+		/// </summary>
+		/// <returns></returns>
 		public int GetPersonID() {
 			return next_person_id;
 		}
 		
-		// Returns the route for the person.
+		/// <summary>
+		/// Returns the Route that the person is navigating.
+		/// </summary>
+		/// <returns></returns>
 		public Route GetRoute() {
 			return route;
 		}
 		
-		// Returns some text that describes the person.
+		/// <summary>
+		/// Returns a string that describes the Person.
+		/// </summary>
+		/// <returns></returns>
 		public override string ToString() {
 			return "Person " + person_ID + ":\nName: " + name + "\nCurrent Path: " + current_path.GetID() + "\nDistance along path: " + distance_along_path + "\n\n";
 		}
