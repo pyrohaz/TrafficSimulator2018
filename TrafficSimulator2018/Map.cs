@@ -120,9 +120,8 @@ namespace TrafficSimulator2018
 						attached_paths.Add(path);
 					}
 				}
-				
 			}
-			
+
 			return attached_paths;
 		}
 		

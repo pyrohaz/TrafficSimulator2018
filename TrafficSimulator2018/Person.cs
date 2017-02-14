@@ -34,8 +34,7 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <param name="start_node"></param>
 		/// <param name="end_node"></param>
-		public Person(Node start_node, Node end_node) : this("Steve", start_node, end_node) {
-		}
+		public Person(Node start_node, Node end_node) : this("Steve", start_node, end_node) {}
 		
 		/// <summary>
 		/// Creates a person with a start and end node and a name.

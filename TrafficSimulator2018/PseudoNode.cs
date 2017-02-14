@@ -13,23 +13,18 @@ namespace TrafficSimulator2018
 	/// <summary>
 	/// Description of PseudoNode.
 	/// </summary>
-	public class PseudoNode : Node {
-		
-		static int next_ID = -1;
+	public class PseudoNode {
 		
 		Path path; // The path the the PseudoNode sits on
 		double distance_along_path = 0;
 		
 		public PseudoNode(Path path, double distance_along_path) {
-			id = next_ID--;
 			SetPath(path, distance_along_path);
 		}
 		
 		public PseudoNode(Node node) {
-			id = next_ID--;
-			path = null;
-			x = node.GetX();
-			y = node.GetY();
+			path = Map.GetPathsFromNode(node)[0];
+			distance_along_path = (path.GetNodes()[0] == node) ? 0 : path.GetDistance();
 		}
 		
 		public void SetPath(Path path, double distance_along_path) {

@@ -103,13 +103,25 @@ namespace TrafficSimulator2018
 			path_route = end_node_and_time.ConvertToListOfPaths();
 			
 			// TODO: Remove print lines
-			Debug.WriteLine("Optimum route from " + source_node.GetID() + " to " + end_node.GetID() + ":");
-			foreach (Node node in node_route) {
-				Debug.WriteLine(node.GetID());
-			}
+//			Debug.WriteLine("Optimum route from " + source_node.GetID() + " to " + end_node.GetID() + ":");
+//			foreach (Node node in node_route) {
+//				Debug.WriteLine(node.GetID());
+//			}
+//			
+//			Debug.WriteLine("Time = " + GetNodeAndTime(end_node, nodes_and_times).GetTime());
 			
-			Debug.WriteLine("Time = " + GetNodeAndTime(end_node, nodes_and_times).GetTime());
-			
+		}
+		
+		public Route(Node source_node, PseudoNode end_node) {
+			// TODO: implement whatever this monstrosity turns out to be
+		}
+		
+		public Route(PseudoNode source_node, Node end_node) {
+			// TODO: implement whatever this monstrosity turns out to be
+		}
+		
+		public Route(PseudoNode source_node, PseudoNode end_node) {
+			// TODO: implement whatever this monstrosity turns out to be
 		}
 		
 		/// <summary>

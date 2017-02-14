@@ -13,8 +13,7 @@ using System.Diagnostics;
 namespace TrafficSimulator2018
 {
 	/// <summary>
-	/// Contains references to all of the different Person objects
-	/// that need to be rendered.
+	/// Contains references to all of the different Person objects that need to be rendered.
 	/// </summary>
 	public static class People
 	{

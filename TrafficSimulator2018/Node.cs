@@ -17,8 +17,8 @@ namespace TrafficSimulator2018
 	public class Node
 	{
 		
-		double x = 0.0, y = 0.0;
-		int visitors = 0, id = -1;
+		protected double x = 0.0, y = 0.0;
+		protected int visitors = 0, id = -1;
 		
 		/// <summary>
 		/// Default constructor sets a node with default values.
