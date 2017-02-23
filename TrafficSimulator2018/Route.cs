@@ -16,11 +16,8 @@ namespace TrafficSimulator2018
 	/// A Route is contains the Nodes and Paths required to go from a start Node to
 	/// an end Node via the shortest possible path.
 	/// </summary>
-	public class Route
-	{
+	public class Route {
 
-		Node source_node, end_node;
-		
 		// Once the route has been calculated, this will contain the Nodes for the Route in the order that they occur.
 		List<Node> node_route;
 		
@@ -29,29 +26,50 @@ namespace TrafficSimulator2018
 		List<Path> path_route;
 		
 		/// <summary>
-		/// Initialises a route by giving a start and end node.
+		/// Initialises a Eoute by giving a start and end Node, and calculates the quickest Route between them.
 		/// </summary>
 		/// <param name="source_node"></param>
 		/// <param name="end_node"></param>
-		public Route(Node source_node, Node end_node) {
+		public Route(Node source_node, Node end_node) : this (new PseudoNode(source_node), new PseudoNode(end_node)) {}
+		
+		/// <summary>
+		/// Initialises a Route by giving a start Node and end PseudoNode, and calculates the quickest Route between
+		/// them.
+		/// </summary>
+		/// <param name="source_node"></param>
+		/// <param name="end_node"></param>
+		public Route(Node source_node, PseudoNode end_node) : this (new PseudoNode(source_node), end_node) {}
+		
+		/// <summary>
+		/// Initialises a Route by giving a start PseudoNode and end Node, and calculates the quickest Route between
+		/// them.
+		/// </summary>
+		/// <param name="source_node"></param>
+		/// <param name="end_node"></param>
+		public Route(PseudoNode source_node, Node end_node) : this (source_node, new PseudoNode(end_node)) {}
+		
+		/// <summary>
+		/// Initialises a Route by giving a start and end PseudoNode, and calculates the quickest Route between them.
+		/// </summary>
+		/// <param name="source_node"></param>
+		/// <param name="end_node"></param>
+		public Route(PseudoNode source_node, PseudoNode end_node) {
+			Node [] source_nodes = source_node.GetPath().GetNodes();
+			Node [] end_nodes = end_node.GetPath().GetNodes();
+			bool [] end_nodes_mapped = {false, false};
 			
 			List<NodeAndTime> nodes_and_times = new List<NodeAndTime>();
-			
-			this.source_node = source_node;
-			this.end_node = end_node;
-			
 			List<Node> nodes = Map.GetNodes();
 			
 			// Setting the initial lengths (times) to get to each node from the source node
-			foreach (Node node in nodes) {
-				if (node == source_node) {
-					nodes_and_times.Add(new NodeAndTime(node, true));
+			foreach(Node node in nodes) {
+				if (node == source_nodes[0] || node == source_nodes[1]) {
+					nodes_and_times.Add(new NodeAndTime(node, source_node.GetPath().GetTimeToNodeFrom(node, source_node)));
 				} else {
 					nodes_and_times.Add(new NodeAndTime(node, false));
 				}
 			}
-	
-						
+			
 			// Implementing Dijkstra's algorithm:
 			
 			bool complete = false;
@@ -70,58 +88,63 @@ namespace TrafficSimulator2018
 					}
 				}
 				
-				// If all nodes have been mapped, then the analysis_node was not set.
-				// Hence we need not run the rest of the loop and we can finish the while loop.
-				if (analysis_node == null || analysis_node.GetNode() == end_node) {
+				// If all nodes have been mapped, then the analysis_node was not set in the previous code snippet.
+				// Hence we need not run the rest of the loop and we can finish the while loop. This is a fail safe
+				// to ensure that the code does not crash. In ordinary circumstances, this scenario should be
+				// handled below, at the bottom of the while loop.
+				if (analysis_node == null) {
 					complete = true;
-				} else {
-					Debug.WriteLine("Analysing node " + analysis_node.GetNode().GetID());
-					// Get adjacent nodes
-					List<Node> adj_nodes_temp = Map.GetNodesAdjacentToNode(analysis_node.GetNode());
+					continue;
+				}
+				
+				Debug.WriteLine("Analysing node " + analysis_node.GetNode().GetID());
+				
+				// Get adjacent nodes
+				List<Node> adj_nodes_temp = Map.GetNodesAdjacentToNode(analysis_node.GetNode());
+				
+				foreach(Node node in adj_nodes_temp) {
 					
-					foreach(Node node in adj_nodes_temp) {
-						
-						// Calculate time coming from this node
-						double new_time = Map.GetPathWithNodes(analysis_node.GetNode(), node).GetTime() + analysis_node.GetTime();
-						
-						// If the time lower than it would be taking the previous route here, change that NodeAndTime object to come through this way instead
-						NodeAndTime previous_node_and_time = GetNodeAndTime(node, nodes_and_times);
-						if (new_time < previous_node_and_time.GetTime()) {
-							List<NodeAndTime> new_shortest_route = new List<NodeAndTime>(analysis_node.GetShortestRouteToNodeForCalc());
-							new_shortest_route.Add(analysis_node);
-							previous_node_and_time.SetShortestRouteToNode(new_shortest_route);
-							previous_node_and_time.SetTime(new_time);
-						}
+					// Calculate time coming from this node
+					double new_time = Map.GetPathWithNodes(analysis_node.GetNode(), node).GetTime() + analysis_node.GetTime();
+					
+					// If the time lower than it would be taking the previous route here, change that NodeAndTime object to come through this way instead
+					NodeAndTime previous_node_and_time = GetNodeAndTime(node, nodes_and_times);
+					if (new_time < previous_node_and_time.GetTime()) {
+						List<NodeAndTime> new_shortest_route = new List<NodeAndTime>(analysis_node.GetShortestRouteToNodeForCalc());
+						new_shortest_route.Add(analysis_node);
+						previous_node_and_time.SetShortestRouteToNode(new_shortest_route);
+						previous_node_and_time.SetTime(new_time);
 					}
-					analysis_node.SetAdjacentNodesMapped(true);
+				}
+				analysis_node.SetAdjacentNodesMapped(true);
+				
+				// Check if both Nodes either side of the PseudoNode have been analysed.
+				if (analysis_node.GetNode() == end_nodes[0]) {
+					end_nodes_mapped[0] = true;
+				} else if (analysis_node.GetNode() == end_nodes[1]) {
+					end_nodes_mapped[1] = true;
+				}
+				
+				// Completing the loop if both of the end Nodes have been mapped
+				if (end_nodes_mapped[0] && end_nodes_mapped[1]) {
+					complete = true;
 				}
 			}
 			
-			// Converting the array of NodeAndTime object to just Nodes.
-			NodeAndTime end_node_and_time = GetNodeAndTime(end_node, nodes_and_times);
-			node_route = end_node_and_time.ConvertToListOfNodes();
-			path_route = end_node_and_time.ConvertToListOfPaths();
+			// Getting the time that it will take to get to the PseudoNode via both Nodes either side of the containing Route
+			NodeAndTime [] end_node_and_times = {GetNodeAndTime(end_nodes[0], nodes_and_times), GetNodeAndTime(end_nodes[1], nodes_and_times)};
+			double time_from_end_node_1 = end_node_and_times[0].GetTime() + end_node.GetPath().GetTimeToNodeFrom(end_node_and_times[0].GetNode(), end_node);
+			double time_from_end_node_2 = end_node_and_times[1].GetTime() + end_node.GetPath().GetTimeToNodeFrom(end_node_and_times[1].GetNode(), end_node);
 			
-			// TODO: Remove print lines
-//			Debug.WriteLine("Optimum route from " + source_node.GetID() + " to " + end_node.GetID() + ":");
-//			foreach (Node node in node_route) {
-//				Debug.WriteLine(node.GetID());
-//			}
-//			
-//			Debug.WriteLine("Time = " + GetNodeAndTime(end_node, nodes_and_times).GetTime());
+			// Selecting to go through the Node that will give the shortest time, and converting these to a list of Nodes.
+			if (time_from_end_node_1 <= time_from_end_node_2) {
+				node_route = end_node_and_times[0].ConvertToListOfNodes();
+				path_route = end_node_and_times[0].ConvertToListOfPaths();
+			} else {
+				node_route = end_node_and_times[1].ConvertToListOfNodes();
+				path_route = end_node_and_times[1].ConvertToListOfPaths();
+			}
 			
-		}
-		
-		public Route(Node source_node, PseudoNode end_node) {
-			// TODO: implement whatever this monstrosity turns out to be
-		}
-		
-		public Route(PseudoNode source_node, Node end_node) {
-			// TODO: implement whatever this monstrosity turns out to be
-		}
-		
-		public Route(PseudoNode source_node, PseudoNode end_node) {
-			// TODO: implement whatever this monstrosity turns out to be
 		}
 		
 		/// <summary>
@@ -174,7 +197,12 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <returns></returns>
 		public override string ToString() {
-			return source_node.GetID() + " to " + end_node.GetID() + "\n";
+			string route = "Route: [start]";
+			foreach (Node node in node_route) {
+				route += ", " + node.GetID();
+			}
+			route += ", [end]";
+			return route;
 		}
 		
 	}
@@ -204,6 +232,17 @@ namespace TrafficSimulator2018
 		public NodeAndTime(Node node, bool source_node) {
 			this.node = node;
 			time = source_node ? 0 : Double.MaxValue;
+		}
+		
+		/// <summary>
+		/// Initialises a Node and gives the length of time that it takes to get to the Node. This can be
+		/// useful if the starting position of the Route is a PseudoNode.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <param name="time"></param>
+		public NodeAndTime(Node node, double time) {
+			this.node = node;
+			this.time = time;
 		}
 		
 		/// <summary>
@@ -272,7 +311,7 @@ namespace TrafficSimulator2018
 			foreach (NodeAndTime node_and_time in shortest_route_to_node) {
 				node_route.Add(node_and_time.GetNode());
 			}
-			node_route.Add(GetNode());
+			node_route.Add(node);
 			return node_route;
 		}
 		
@@ -292,6 +331,20 @@ namespace TrafficSimulator2018
 			}
 			
 			return path_route;
+		}
+		
+		public void PrintShortestPath() {
+			Debug.Write("Route to node " + node.GetID() + ": ");
+			
+			if (shortest_route_to_node.Count == 0) {
+				Debug.WriteLine("No route yet calculated.");
+				return;
+			}
+			
+			for (int i = 0; i < shortest_route_to_node.Count-1; i++) {
+				Debug.Write(shortest_route_to_node[i].GetNode().GetID() + ", ");
+			}
+			Debug.Write(shortest_route_to_node[shortest_route_to_node.Count-1].GetNode().GetID() + "\n");
 		}
 		
 		/// <summary>

@@ -7,6 +7,8 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace TrafficSimulator2018
 {
@@ -27,6 +29,7 @@ namespace TrafficSimulator2018
 		Node last_node_passed;
 		double distance_along_path = 0;
 		Route route;
+		PseudoNode position;
 		
 		/// <summary>
 		/// Creates a person with a start and end node. This will give the person a
@@ -37,15 +40,24 @@ namespace TrafficSimulator2018
 		public Person(Node start_node, Node end_node) : this("Steve", start_node, end_node) {}
 		
 		/// <summary>
-		/// Creates a person with a start and end node and a name.
+		/// Creates a person with a start and end Node and a name.
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="start_node"></param>
 		/// <param name="end_node"></param>
-		public Person(string name, Node start_node, Node end_node) {
+		public Person(string name, Node start_node, Node end_node) : this("Steve", new PseudoNode(start_node), new PseudoNode(end_node)) {}
+		
+		/// <summary>
+		/// Creates a Person with a start and end PseudoNode and a name.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="start_node"></param>
+		/// <param name="end_node"></param>
+		public Person (string name, PseudoNode start_node, PseudoNode end_node) {
 			this.name = name;
 			route = new Route(start_node, end_node);
-			last_node_passed = start_node;
+			List<Node> node_route = route.GetNodeRoute();
+			position = start_node;
 		}
 		
 		/// <summary>
@@ -63,6 +75,31 @@ namespace TrafficSimulator2018
 		/// <returns></returns>
 		public double GetDistanceAlongPath() {
 			return distance_along_path;
+		}
+		
+		/// <summary>
+		/// Returns a double representing the x coordinate of the Person's position.
+		/// </summary>
+		/// <returns></returns>
+		public double GetX() {
+			return position.GetPosition()[0];
+		}
+		
+		/// <summary>
+		/// Returns a double representing the y coordinate of the Person's position.
+		/// </summary>
+		/// <returns></returns>
+		public double GetY() {
+			return position.GetPosition()[1];
+		}
+		
+		/// <summary>
+		/// Returns a double [] of size 2, representing the x and y coordinates of the Person's
+		/// position respectively.
+		/// </summary>
+		/// <returns></returns>
+		public double [] GetPosition() {
+			return position.GetPosition();
 		}
 		
 		/// <summary>

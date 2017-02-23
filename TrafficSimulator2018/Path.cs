@@ -7,6 +7,7 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using System.Diagnostics;
 
 namespace TrafficSimulator2018
 {
@@ -62,7 +63,10 @@ namespace TrafficSimulator2018
 			return speed_limit;
 		}
 		
-		// Sets the speed limit of the path.
+		/// <summary>
+		/// Sets the speed limit of the path.
+		/// </summary>
+		/// <param name="speed_limit"></param>
 		public void SetSpeedLimit(double speed_limit) {
 			this.speed_limit = speed_limit;
 		}
@@ -89,7 +93,43 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <returns></returns>
 		public double GetTime() {
-			return GetDistance()/speed_limit;
+			return distance_between_nodes/speed_limit;
+		}
+		
+		/// <summary>
+		/// This method returns a double representing the length of time (in seconds) that it would
+		/// take to get to a Node from the given distance along the Path.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <param name="distance_along_path"></param>
+		/// <returns></returns>
+		public double GetTimeToNodeFrom(Node node, double distance_along_path) {
+			if (node == nodes[0]) {
+				return distance_along_path/speed_limit;
+			} else if (node == nodes[1]) {
+				return (distance_between_nodes-distance_along_path)/speed_limit;
+			} else {
+				Debug.WriteLine("Node " + node.GetID() + " is not part of this path.");
+				return Double.MaxValue;
+			}
+		}
+		
+		/// <summary>
+		/// This method returns a double representing the length of time (in seconds) that it would
+		/// take to get to from a PseudoNode to a Node along the same Path. If the given Node is
+		/// not on the same Path, this returns Double.MAX_VALUE as this method contains no support
+		/// for routing.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <param name="pseudoNode"></param>
+		/// <returns></returns>
+		public double GetTimeToNodeFrom(Node node, PseudoNode pseudoNode) {
+			if (pseudoNode.GetPath() == this) {
+				return GetTimeToNodeFrom(node, pseudoNode.GetDistanceAlongPath());
+			} else {
+				Debug.WriteLine("The PseudoNode does not lie on this Path.");
+				return Double.MaxValue;
+			}
 		}
 		
 		/// <summary>

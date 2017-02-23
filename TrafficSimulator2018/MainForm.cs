@@ -45,10 +45,6 @@ namespace TrafficSimulator2018
 			timer.Enabled = true;
 			timer.Tick += TimerCallback;
 			
-			// TODO: Remove this stuff - this is just to test the Route generation
-//			Debug.WriteLine(People.GetPerson(0).GetRoute().ToString());
-			PseudoNode pn = new PseudoNode(Map.GetNode(4));
-			Debug.WriteLine(pn.GetPath().GetNodes()[0].GetID() + ", " + pn.GetPath().GetNodes()[1].GetID() + " at " + pn.GetDistanceAlongPath());
 		}
 		
 		//Upon panel paint function, render to panel

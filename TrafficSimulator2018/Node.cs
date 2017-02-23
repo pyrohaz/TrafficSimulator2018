@@ -106,6 +106,15 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
+		/// Returns a double [] of size 2 that represents the x and y coordinates (respectively) on
+		/// the Map.
+		/// </summary>
+		/// <returns></returns>
+		public double [] GetPosition() {
+			return new double[] {x, y};
+		}
+		
+		/// <summary>
 		/// Returns some text that describes the node.
 		/// </summary>
 		/// <returns></returns>
