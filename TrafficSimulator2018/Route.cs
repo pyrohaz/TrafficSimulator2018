@@ -97,8 +97,6 @@ namespace TrafficSimulator2018
 					continue;
 				}
 				
-				Debug.WriteLine("Analysing node " + analysis_node.GetNode().GetID());
-				
 				// Get adjacent nodes
 				List<Node> adj_nodes_temp = Map.GetNodesAdjacentToNode(analysis_node.GetNode());
 				
