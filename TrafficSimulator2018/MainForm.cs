@@ -19,6 +19,7 @@ namespace TrafficSimulator2018
 	{
 		//Amount of pixels from the edge of the panel to draw
 		const int PANEL_EDGE = 50;
+		const int REFRESH_RATEMS = 30;
 		
 		//Map renderer
 		MapRenderer maprndr;
@@ -31,9 +32,9 @@ namespace TrafficSimulator2018
 			InitializeComponent();
 			
 			//Turn on double buffering for the drawing panel (remove flickering)
-			typeof(Panel).InvokeMember("DoubleBuffered", 
-	    		BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, 
-    			null, panel, new object[] { true });		
+			typeof(Panel).InvokeMember("DoubleBuffered",
+			                           BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+			                           null, panel, new object[] { true });
 			
 			
 			//Create new map renderer with panel parameters
@@ -41,7 +42,7 @@ namespace TrafficSimulator2018
 			maprndr.SetPanelRange(PANEL_EDGE, panel.Size.Width-PANEL_EDGE, PANEL_EDGE, panel.Size.Height-PANEL_EDGE);
 			
 			//Generate a timer to constantly update the panel
-			timer.Interval = 30;	//50ms update rate
+			timer.Interval = REFRESH_RATEMS;	//50ms update rate
 			timer.Enabled = true;
 			timer.Tick += TimerCallback;
 			
@@ -55,6 +56,9 @@ namespace TrafficSimulator2018
 		//Upon this timer callback, refresh the panel
 		void TimerCallback(object sender, EventArgs e){
 			panel.Refresh();
+			for(int n = 0; n<People.GetNumberOfPeople(); n++){
+				People.GetPeople()[n].update(REFRESH_RATEMS/1000);
+			}
 			return;
 		}
 		

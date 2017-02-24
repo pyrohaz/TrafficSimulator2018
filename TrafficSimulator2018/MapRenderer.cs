@@ -8,7 +8,7 @@
  */
 using System;
 using System.Drawing;
-using System.Threading;
+using System.Diagnostics;
 
 namespace TrafficSimulator2018
 {
@@ -83,7 +83,6 @@ namespace TrafficSimulator2018
 				double nxl1, nxl2, nyu1, nyu2;
 				double nx1, nx2, ny1, ny2;
 				double tx, ty;
-				double dist;
 				
 				if(Map.GetPaths()[n].GetNodes()[0] != null &&  Map.GetPaths()[n].GetNodes()[1] != null){
 					nx1 = Map.GetPaths()[n].GetNodes()[0].GetX();
@@ -110,37 +109,20 @@ namespace TrafficSimulator2018
 			}
 		}
 		
-		//Draw all people and their positions along the line (linearly interpolated)
-		static double position = 0;
 		void DrawPeople(Graphics panelgfx){
-			//for(int n = 0; n<People.GetPeople().Count; n++){
-			
-			for(int n = 0; n<1; n++){
-				//Grab each persons position and draw its on the corresponding line
-				//Person person = People.GetPeople()[n];
-				//Path path = person.GetPath();
-				//double position = person.GetPosition();
+			double px, py, pxs, pys;
+			for(int n = 0; n<People.GetNumberOfPeople(); n++){
+				//Grab each persons position and draw it
+				Person person = People.GetPeople()[n];
 				
-				Path path = Map.GetPaths()[n];
-				
-				double nsx = path.GetNodes()[0].GetX();
-				double nsy = path.GetNodes()[0].GetY();
-				double nex = path.GetNodes()[1].GetX();
-				double ney = path.GetNodes()[1].GetY();
-				
-				double px, py, pxs, pys;
-				
-				//Test positions
-				position += 0.2/path.GetDistance();
-				if(position>1.0) position = 0.0;
-				
-				//Linearly interpolate position on line
-				px = nsx + position*(nex-nsx);
-				py = nsy + position*(ney-nsy);
+				px = person.GetX();
+				py = person.GetY();
 				
 				//Scale person position to screen
 				pxs = xleft + (px - xmin)*(double)(xright-xleft)/(xmax-xmin) - NODE_RADIUS/2;
 				pys = ytop + (py - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
+				
+				Debug.WriteLine(px + " " + py);
 				
 				//Draw person
 				panelgfx.FillEllipse(new SolidBrush(Color.DodgerBlue), new RectangleF((float)pxs, (float)pys, (float)NODE_RADIUS, (float)NODE_RADIUS));
