@@ -24,6 +24,7 @@ namespace TrafficSimulator2018
 		// Once the route has been calculated, this will contain the Paths for the Route in the order that they occur.
 		// The Nodes in each Path will not necessarily be in the correct order.
 		List<Path> path_route;
+		List<Direction> path_directions;
 		
 		/// <summary>
 		/// Initialises a Eoute by giving a start and end Node, and calculates the quickest Route between them.
@@ -143,6 +144,22 @@ namespace TrafficSimulator2018
 				path_route = end_node_and_times[1].ConvertToListOfPaths();
 			}
 			
+			// Adding start and end Paths on as they may not currently be there
+			if (path_route[0] != source_node.GetPath()) {
+				path_route.Insert(0, source_node.GetPath());
+			}
+			if (path_route[path_route.Count-1] != end_node.GetPath()) {
+				path_route.Add(end_node.GetPath());
+			}
+			
+			// Determine which directions the Paths should be travelled in
+			DetermineDirections();
+			
+			Debug.WriteLine("Path Route: ");
+			foreach (Path path in path_route) {
+				Debug.WriteLine(path.GetNodes()[0].GetID() + ", " + path.GetNodes()[1].GetID());
+			}
+			
 		}
 		
 		/// <summary>
@@ -160,6 +177,31 @@ namespace TrafficSimulator2018
 		/// <returns></returns>
 		public List<Path> GetPathRoute() {
 			return path_route;
+		}
+		
+		/// <summary>
+		/// This method finds the next Path on the Route after the given Path. If the given Path is not on the Route,
+		/// or if the given Path was the final Path in the Route, this method will return null.
+		/// </summary>
+		/// <param name="current_path"></param>
+		/// <returns></returns>
+		public Path GetNextPath(Path current_path) {
+			for (int i = 0; i < path_route.Count-1; i++) {
+				if (path_route[i] == current_path) {
+					return path_route[i+1];
+				}
+			}
+			return null;
+		}
+		
+		/// <summary>
+		/// This method finds the next Path on the Route by the current position of the PseudoNode. If the PseudoNode is
+		/// not on the Route, or if it lies on the last Path in the Route, this method will return null.
+		/// </summary>
+		/// <param name="current_position"></param>
+		/// <returns></returns>
+		public Path GetNextPath(PseudoNode current_position) {
+			return GetNextPath(current_position.GetPath());
 		}
 		
 		/// <summary>
@@ -188,6 +230,35 @@ namespace TrafficSimulator2018
 				}
 			}
 			return null;
+		}
+		
+		void DetermineDirections() {
+			
+			// TODO: Fix this implementation
+			return;
+			
+			// Initialise the size of the new Path directions to be the same as the size as the
+			// path_route
+			path_directions = new List<Direction>(path_route.Count);
+			
+			// Loop through each Path (except the last) and find the correct direction
+			for (int i = 0; i < path_route.Count-1; i++) {
+				
+				// Get nodes that exist on the current Path
+				Node [] current_nodes = path_route[i].GetNodes();
+				
+				// Get nodes that exist on the next Path
+				Node [] next_nodes = path_route[i+1].GetNodes();
+				
+				if (current_nodes[0] == next_nodes[0] || current_nodes[0] == next_nodes[1]) {
+					path_directions[i] = Direction.BACKWARDS;
+				} else {
+					path_directions[i] = Direction.FORWARDS;
+				}
+			}
+			
+			// Find the direction of the last Path
+			
 		}
 				
 		/// <summary>

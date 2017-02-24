@@ -22,11 +22,11 @@ namespace TrafficSimulator2018
 		
 		// Sets up all People objects
 		static People() {
-			people.Add(new Person("Barry", Map.GetNode(7), Map.GetNode(7)));
+			people.Add(new Person("Barry", new PseudoNode(Map.GetPathWithNodes(0,2), 15), new PseudoNode(Map.GetNode(7))));
 		}
 		
 		/// <summary>
-		/// Returns a List<Person> of all Person objects.
+		/// Returns a List of all Person objects.
 		/// </summary>
 		/// <returns></returns>
 		public static List<Person> GetPeople() {
@@ -34,7 +34,7 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
-		/// Adds a Person object the the List of all Person objects.
+		/// Adds a Person object the List of all Person objects.
 		/// </summary>
 		/// <param name="person"></param>
 		public static void AddPerson(Person person) {

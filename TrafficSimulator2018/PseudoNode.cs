@@ -92,7 +92,7 @@ namespace TrafficSimulator2018
 			double [] node1_position = path.GetNodes()[0].GetPosition();
 			double [] node2_position = path.GetNodes()[1].GetPosition();
 			
-			double angle = Math.Atan2(node2_position[0] - node1_position[0], node2_position[1] - node1_position[1]);
+			double angle = Math.Atan2(node2_position[1] - node1_position[1], node2_position[0] - node1_position[0]);
 			return new double[] {node1_position[0] + (distance_along_path * Math.Cos(angle)), node1_position[1] + (distance_along_path * Math.Sin(angle))};
 		}
 		

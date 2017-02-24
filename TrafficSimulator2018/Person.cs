@@ -24,12 +24,9 @@ namespace TrafficSimulator2018
 		static int next_id = 0;
 		int id = next_id++;
 		
-		string name;
-		Path current_path; // TODO: implement the current path
-		Node last_node_passed;
-		double distance_along_path = 0;
-		Route route;
-		PseudoNode position;
+		string name;			// Name of the Person
+		Route route;			// Which Route the Person will take
+		PseudoNode position;	// The position of the Person
 		
 		/// <summary>
 		/// Creates a person with a start and end node. This will give the person a
@@ -65,7 +62,7 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <returns></returns>
 		public Path GetCurrentPath() {
-			return current_path;
+			return position.GetPath();
 		}
 		
 		/// <summary>
@@ -74,7 +71,7 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <returns></returns>
 		public double GetDistanceAlongPath() {
-			return distance_along_path;
+			return position.GetDistanceAlongPath();
 		}
 		
 		/// <summary>
@@ -135,7 +132,7 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <param name="seconds_since_last_update"></param>
 		public void update(double seconds_since_last_update) {
-			// TODO: implement the update method
+			
 		}
 		
 		/// <summary>
