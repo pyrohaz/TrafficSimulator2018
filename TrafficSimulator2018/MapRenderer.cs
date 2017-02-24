@@ -122,8 +122,6 @@ namespace TrafficSimulator2018
 				pxs = xleft + (px - xmin)*(double)(xright-xleft)/(xmax-xmin) - NODE_RADIUS/2;
 				pys = ytop + (py - ymin)*(double)(ybottom-ytop)/(ymax-ymin) - NODE_RADIUS/2;
 				
-				Debug.WriteLine(px + " " + py);
-				
 				//Draw person
 				panelgfx.FillEllipse(new SolidBrush(Color.DodgerBlue), new RectangleF((float)pxs, (float)pys, (float)NODE_RADIUS, (float)NODE_RADIUS));
 			}
