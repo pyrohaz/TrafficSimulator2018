@@ -23,6 +23,12 @@ namespace TrafficSimulator2018
 		// Sets up all People objects
 		static People() {
 			people.Add(new Person("Barry", new PseudoNode(Map.GetPathWithNodes(0,2), 20), new PseudoNode(Map.GetPathWithNodes(0,2), 3)));
+			people.Add(new Person("Barry", new PseudoNode(Map.GetPathWithNodes(1,3), 20), new PseudoNode(Map.GetPathWithNodes(5,4), 3)));
+			people.Add(new Person("Barry", new PseudoNode(Map.GetPathWithNodes(2,3), 20), new PseudoNode(Map.GetPathWithNodes(6,7), 3)));
+			people.Add(new Person("Barry", new PseudoNode(Map.GetPathWithNodes(3,4), 20), new PseudoNode(Map.GetPathWithNodes(3,4), 3)));
+			people.Add(new Person("Barry", new PseudoNode(Map.GetPathWithNodes(1,2), 20), new PseudoNode(Map.GetPathWithNodes(2,5), 3)));
+			people.Add(new Person("Barry", new PseudoNode(Map.GetPathWithNodes(4,5), 20), new PseudoNode(Map.GetPathWithNodes(2,5), 3)));
+			people.Add(new Person("Barry", new PseudoNode(Map.GetPathWithNodes(3,4), 20), new PseudoNode(Map.GetPathWithNodes(6,7), 3)));
 		}
 		
 		/// <summary>
