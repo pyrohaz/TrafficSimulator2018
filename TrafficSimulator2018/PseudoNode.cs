@@ -47,7 +47,7 @@ namespace TrafficSimulator2018
 		/// <param name="node"></param>
 		public PseudoNode(PseudoNode node) {
 			path = node.GetPath();
-			distance_along_path = node.GetPath().GetDistance();
+			distance_along_path = node.GetDistanceAlongPath();
 		}
 		
 		/// <summary>
@@ -68,7 +68,7 @@ namespace TrafficSimulator2018
 		/// distance will be set to 0.
 		/// </summary>
 		/// <param name="distance"></param>
-		void SetDistanceAlongPath(double distance) {
+		public void SetDistanceAlongPath(double distance) {
 			if (distance > path.GetDistance() || distance < 0) {
 				distance_along_path = 0;
 			} else {
@@ -104,6 +104,15 @@ namespace TrafficSimulator2018
 			double angle = Math.Atan2(node2_position[1] - node1_position[1], node2_position[0] - node1_position[0]);
 			return new double[] {node1_position[0] + (distance_along_path * Math.Cos(angle)), node1_position[1] + (distance_along_path * Math.Sin(angle))};
 		}
+		
+		/// <summary>
+		/// Returns a string that describes the PseudoNode.
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString() {
+			return string.Format("[PseudoNode Path={0}, Distance_along_path={1}]", path, distance_along_path);
+		}
+ 
 		
 	}
 }

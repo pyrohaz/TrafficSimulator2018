@@ -115,6 +115,29 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
+		/// This method returns a double that represents the length of time (in seconds) that it
+		/// would take to get from one PseudoNode on the Path to another on the Path. If one of
+		/// the nodes is not on this Path, this method will return Double.MaxValue.
+		/// </summary>
+		/// <param name="destination_node"></param>
+		/// <param name="source_node"></param>
+		/// <returns></returns>
+		public double GetTimeToPseudoNodeFrom(PseudoNode destination_node, PseudoNode source_node) {
+			
+			// Check both PseudoNodes are on the Path
+			if (destination_node.GetPath() != this || source_node.GetPath() != this) {
+				return Double.MaxValue;
+			}
+			
+			// Calculate length of time
+			double destination_distance = destination_node.GetDistanceAlongPath();
+			double source_distance = source_node.GetDistanceAlongPath();
+			double time = (destination_distance - source_distance) / speed_limit;
+			time = (time > 0) ? time : -time;
+			return time;
+		}
+		
+		/// <summary>
 		/// This method returns a double representing the length of time (in seconds) that it would
 		/// take to get to from a PseudoNode to a Node along the same Path. If the given Node is
 		/// not on the same Path, this returns Double.MAX_VALUE as this method contains no support

@@ -57,7 +57,7 @@ namespace TrafficSimulator2018
 		void TimerCallback(object sender, EventArgs e){
 			panel.Refresh();
 			for(int n = 0; n<People.GetNumberOfPeople(); n++){
-				People.GetPeople()[n].update(REFRESH_RATEMS/1000);
+				People.GetPeople()[n].update((double) REFRESH_RATEMS/1000.0);
 			}
 			return;
 		}

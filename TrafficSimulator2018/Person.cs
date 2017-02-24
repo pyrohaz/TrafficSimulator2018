@@ -27,6 +27,7 @@ namespace TrafficSimulator2018
 		string name;			// Name of the Person
 		Route route;			// Which Route the Person will take
 		PseudoNode position;	// The position of the Person
+		bool destination_reached = true;
 		
 		/// <summary>
 		/// Creates a person with a start and end node. This will give the person a
@@ -55,6 +56,7 @@ namespace TrafficSimulator2018
 			route = new Route(start_node, end_node);
 			List<Node> node_route = route.GetNodeRoute();
 			position = start_node;
+			destination_reached = false;
 		}
 		
 		/// <summary>
@@ -132,6 +134,71 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <param name="seconds_since_last_update"></param>
 		public void update(double seconds_since_last_update) {
+
+			// If the Pwerson is at the destination already, there's no need to change position
+			if (destination_reached)
+				return;
+			
+			double time_to_destination = Double.MaxValue;
+			// Check if we're on the final path of the route
+			
+			if (route.GetNextPath(position.GetPath()) == null) {
+				time_to_destination = position.GetPath().GetTimeToPseudoNodeFrom(route.GetDestinationNode(), position);
+				Debug.WriteLine(time_to_destination);
+			}
+			// If the Person is nearly at the destination, set the Person at the destination node
+			
+			if (time_to_destination <= seconds_since_last_update) {
+				position = new PseudoNode(route.GetDestinationNode());
+				destination_reached = true;
+				return; // Stop processing
+			}
+			
+			// ------------------------------------------------
+			// Otherwise, the Person is not at the destination:
+			
+			Direction current_direction = route.GetDirection(position);
+			double time_to_next_path = 0;
+			
+			// Work out the time it will take to reach the next Path
+			if (current_direction == Direction.FORWARDS) {
+				time_to_next_path = position.GetPath().GetTimeToNodeFrom(position.GetPath().GetNodes()[1], position);
+			} else {
+				time_to_next_path = position.GetPath().GetTimeToNodeFrom(position.GetPath().GetNodes()[0], position);
+			}
+			
+			// If this loop is entered, the Person will switch paths. Update the position and the
+			// path.
+			while (time_to_next_path <= seconds_since_last_update) {
+				// If this loop is entered, the Person will switch paths. Update the position
+				// and the path.
+				
+				// Take off the amount of time that it would take to get to the next Path
+				seconds_since_last_update -= time_to_next_path;
+				
+				// Update the position PseudoNode
+				Path next_path = route.GetNextPath(position.GetPath());
+				current_direction = route.GetDirection(next_path);
+				if (current_direction == Direction.FORWARDS) {
+					position.SetPath(next_path, 0);
+					time_to_next_path = position.GetPath().GetTimeToNodeFrom(position.GetPath().GetNodes()[1], position);
+				} else {
+					position.SetPath(next_path, next_path.GetDistance());
+					time_to_next_path = position.GetPath().GetTimeToNodeFrom(position.GetPath().GetNodes()[0], position);
+				}
+				
+			}
+			
+			// Do the final updates on the current path only
+			double new_distance = 0;
+			
+			if (current_direction == Direction.FORWARDS) {
+				new_distance = position.GetDistanceAlongPath() + GetCurrentPath().GetSpeedLimit()*seconds_since_last_update;
+			} else {
+				new_distance = position.GetDistanceAlongPath() - GetCurrentPath().GetSpeedLimit()*seconds_since_last_update;
+			}
+			
+			position.SetDistanceAlongPath(new_distance);
 			
 		}
 		
@@ -141,7 +208,15 @@ namespace TrafficSimulator2018
 		/// <returns></returns>
 		public override string ToString() {
 			return "Person " + id + ":\nName: " + name + "\n";
-			//return "Person " + id + ":\nName: " + name + "\nCurrent Path: " + current_path.GetID() + "\nDistance along path: " + distance_along_path + "\n";
+		}
+		
+		/// <summary>
+		/// This method returns a string that comprehensively describes the Person.
+		/// </summary>
+		/// <returns></returns>
+		public String GetDetailedInformation() {
+			// TODO: Fill this with more information
+			return "Person " + id + ":\nName: " + name + "\n";
 		}
 		
 	}

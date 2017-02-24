@@ -20,6 +20,7 @@ namespace TrafficSimulator2018
 
 		// Once the route has been calculated, this will contain the Nodes for the Route in the order that they occur.
 		List<Node> node_route;
+		PseudoNode source_node, end_node;
 		
 		// Once the route has been calculated, this will contain the Paths for the Route in the order that they occur.
 		// The Nodes in each Path will not necessarily be in the correct order.
@@ -52,9 +53,14 @@ namespace TrafficSimulator2018
 		/// <summary>
 		/// Initialises a Route by giving a start and end PseudoNode, and calculates the quickest Route between them.
 		/// </summary>
-		/// <param name="source_node"></param>
-		/// <param name="end_node"></param>
-		public Route(PseudoNode source_node, PseudoNode end_node) {
+		/// <param name="_source_node"></param>
+		/// <param name="_end_node"></param>
+		public Route(PseudoNode _source_node, PseudoNode _end_node) {
+			
+			// Storing the source and destination nodes
+			source_node = new PseudoNode(_source_node);
+			end_node = new PseudoNode(_end_node);
+			
 			Node [] source_nodes = source_node.GetPath().GetNodes();
 			Node [] end_nodes = end_node.GetPath().GetNodes();
 			bool [] end_nodes_mapped = {false, false};
@@ -62,7 +68,7 @@ namespace TrafficSimulator2018
 			List<NodeAndTime> nodes_and_times = new List<NodeAndTime>();
 			List<Node> nodes = Map.GetNodes();
 			
-			// Setting the initial lengths (times) to get to each node from the source node
+			// Setting the initial times to get to each node from the source node
 			foreach(Node node in nodes) {
 				if (node == source_nodes[0] || node == source_nodes[1]) {
 					nodes_and_times.Add(new NodeAndTime(node, source_node.GetPath().GetTimeToNodeFrom(node, source_node)));
@@ -145,6 +151,9 @@ namespace TrafficSimulator2018
 			}
 			
 			// Adding start and end Paths on as they may not currently be there
+			if (path_route.Count == 0) {
+				path_route.Add(source_node.GetPath());
+			}
 			if (path_route[0] != source_node.GetPath()) {
 				path_route.Insert(0, source_node.GetPath());
 			}
@@ -155,11 +164,20 @@ namespace TrafficSimulator2018
 			// Determine which directions the Paths should be travelled in
 			DetermineDirections();
 			
+			// TODO: Remove when comfortable
 			Debug.WriteLine("Path Route: ");
 			foreach (Path path in path_route) {
 				Debug.WriteLine(path.GetNodes()[0].GetID() + ", " + path.GetNodes()[1].GetID());
 			}
 			
+		}
+		
+		/// <summary>
+		/// This method returns the PseudoNode that is the destination node for the Route.
+		/// </summary>
+		/// <returns></returns>
+		public PseudoNode GetDestinationNode() {
+			return end_node;
 		}
 		
 		/// <summary>
@@ -205,6 +223,33 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
+		/// This method returns a Direction that specifies whether the given Path should be travelled forwards or
+		/// backwards (i.e. from Path.GetNodes()[0] to Path.GetNodes()[1] or vice versa). If the Path is not in the
+		/// Route, this method will return Direction.FORWARDS.
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
+		public Direction GetDirection(Path path) {
+			for (int i = 0; i < path_route.Count; i++) {
+				if (path == path_route[i]) {
+					return path_directions[i];
+				}
+			}
+			return Direction.FORWARDS;
+		}
+		
+		/// <summary>
+		/// This method returns a Direction that specifies whether the Path that the PseudoNode is on should be travelled
+		/// forwards or backwards (i.e. from Path.GetNodes()[0] to Path.GetNodes()[1] or vice versa). If the PseudoNode
+		/// does not sit on a Path in this Route, this method will return Direction.FORWARDS.
+		/// </summary>
+		/// <param name="pseudo_node"></param>
+		/// <returns></returns>
+		public Direction GetDirection(PseudoNode pseudo_node) {
+			return GetDirection(pseudo_node.GetPath());
+		}
+		
+		/// <summary>
 		/// Sorts the gives List of NodesAndTimes by the time to get the the Node. The object passed by reference
 		/// to this function is changed itself, but this function also returns a reference to that object.
 		/// </summary>
@@ -232,14 +277,26 @@ namespace TrafficSimulator2018
 			return null;
 		}
 		
+		/// <summary>
+		/// This sets the directions of travel for each of the Paths in the path_route array. The result is stored
+		/// in the path_directions array.
+		/// </summary>
 		void DetermineDirections() {
-			
-			// TODO: Fix this implementation
-			return;
-			
+
 			// Initialise the size of the new Path directions to be the same as the size as the
 			// path_route
 			path_directions = new List<Direction>(path_route.Count);
+			
+			// If the route only contains one path
+			if (path_route.Count == 1) {
+				if (source_node.GetDistanceAlongPath() < end_node.GetDistanceAlongPath()) {
+					path_directions.Add(Direction.FORWARDS);
+				} else {
+					path_directions.Add(Direction.BACKWARDS);
+				}
+				// Do not allow processing of the rest of this function
+				return;
+			}
 			
 			// Loop through each Path (except the last) and find the correct direction
 			for (int i = 0; i < path_route.Count-1; i++) {
@@ -251,13 +308,21 @@ namespace TrafficSimulator2018
 				Node [] next_nodes = path_route[i+1].GetNodes();
 				
 				if (current_nodes[0] == next_nodes[0] || current_nodes[0] == next_nodes[1]) {
-					path_directions[i] = Direction.BACKWARDS;
+					path_directions.Add(Direction.BACKWARDS);
 				} else {
-					path_directions[i] = Direction.FORWARDS;
+					path_directions.Add(Direction.FORWARDS);
 				}
 			}
 			
 			// Find the direction of the last Path
+			Node [] last_path_nodes = path_route[path_route.Count-1].GetNodes();
+			Node [] penultimate_path_node = path_route[path_route.Count-2].GetNodes();
+			
+			if (last_path_nodes[0] == penultimate_path_node[0] || last_path_nodes[0] == penultimate_path_node[1]) {
+				path_directions.Add(Direction.FORWARDS);
+			} else {
+				path_directions.Add(Direction.BACKWARDS);
+			}
 			
 		}
 				

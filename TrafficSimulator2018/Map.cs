@@ -37,18 +37,18 @@ namespace TrafficSimulator2018
 			nodes.Add(new Node(7, 100, 100));
 			
 			// Setting up routes
-			paths.Add(new Path(GetNode(0), GetNode(1), 0.7));
-			paths.Add(new Path(GetNode(0), GetNode(2), 1.0));
-			paths.Add(new Path(GetNode(1), GetNode(2), 0.3));
-			paths.Add(new Path(GetNode(1), GetNode(3), 1.0));
-			paths.Add(new Path(GetNode(1), GetNode(7), 2.0));
-			paths.Add(new Path(GetNode(2), GetNode(3), 1.0));
-			paths.Add(new Path(GetNode(2), GetNode(5), 1.6));
-			paths.Add(new Path(GetNode(3), GetNode(4), 1.0));
-			paths.Add(new Path(GetNode(3), GetNode(6), 1.6));
-			paths.Add(new Path(GetNode(4), GetNode(5), 0.5));
-			paths.Add(new Path(GetNode(4), GetNode(6), 0.5));
-			paths.Add(new Path(GetNode(6), GetNode(7), 0.3));
+			paths.Add(new Path(GetNode(0), GetNode(1), 7));
+			paths.Add(new Path(GetNode(0), GetNode(2), 11));
+			paths.Add(new Path(GetNode(1), GetNode(2), 3));
+			paths.Add(new Path(GetNode(1), GetNode(3), 10));
+			paths.Add(new Path(GetNode(1), GetNode(7), 20));
+			paths.Add(new Path(GetNode(2), GetNode(3), 10));
+			paths.Add(new Path(GetNode(2), GetNode(5), 16));
+			paths.Add(new Path(GetNode(3), GetNode(4), 10));
+			paths.Add(new Path(GetNode(3), GetNode(6), 16));
+			paths.Add(new Path(GetNode(4), GetNode(5), 5));
+			paths.Add(new Path(GetNode(4), GetNode(6), 5));
+			paths.Add(new Path(GetNode(6), GetNode(7), 3));
 		}
 		
 		/// <summary>
