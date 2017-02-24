@@ -42,6 +42,15 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
+		/// Sets up a PseudoNode at the same point as the given PseudoNode.
+		/// </summary>
+		/// <param name="node"></param>
+		public PseudoNode(PseudoNode node) {
+			path = node.GetPath();
+			distance_along_path = node.GetPath().GetDistance();
+		}
+		
+		/// <summary>
 		/// Sets the Path for the PseudoNode, and the distance along the Path from the first Node in the
 		/// Path.GetNodes() array to the second. If the distance is greater than the lenght of the Path,
 		/// or the distance is less than 0, the distance will be set to 0.
