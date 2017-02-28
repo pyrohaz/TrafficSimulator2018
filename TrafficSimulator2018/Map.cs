@@ -33,19 +33,11 @@ namespace TrafficSimulator2018
 				return;
 			}
 			
-			// Setting up routes
-			paths.Add(new Path(GetNode("0"), GetNode(1), 7));
-			paths.Add(new Path(GetNode("0"), GetNode(2), 11));
-			paths.Add(new Path(GetNode("1"), GetNode(2), 3));
-			paths.Add(new Path(GetNode("1"), GetNode(3), 10));
-			paths.Add(new Path(GetNode("1"), GetNode(7), 20));
-			paths.Add(new Path(GetNode("2"), GetNode(3), 10));
-			paths.Add(new Path(GetNode("2"), GetNode(5), 16));
-			paths.Add(new Path(GetNode("3"), GetNode(4), 10));
-			paths.Add(new Path(GetNode("3"), GetNode(6), 16));
-			paths.Add(new Path(GetNode("4"), GetNode(5), 5));
-			paths.Add(new Path(GetNode("4"), GetNode(6), 5));
-			paths.Add(new Path(GetNode("6"), GetNode(7), 3));
+			if (!ReadPaths(directory + "paths.txt")) {
+				Debug.WriteLine("Problem loading map. Exiting.");
+				System.Windows.Forms.Application.Exit();
+				return;
+			}
 		}
 		
 		/// <summary>
@@ -257,9 +249,52 @@ namespace TrafficSimulator2018
 						case 2:
 							nodes.Add(new Node(Convert.ToUInt32(line_components[0]), Convert.ToUInt32(line_components[1])));
 							break;
-						case 3:
+						default:
 							nodes.Add(new Node(Convert.ToUInt32(line_components[0]), Convert.ToUInt32(line_components[1]), line_components[2]));
 							break;
+						}
+					} catch (FormatException e) {
+						Debug.WriteLine("Problem with line " + line_number);
+						return false;
+					} catch (OverflowException e) {
+						Debug.WriteLine("Problem with line " + line_number);
+						return false;
+					}
+					
+					line_number++;
+					
+				} while (reader.Peek() != -1);
+				
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		static bool ReadPaths(string filepath) {
+			if (System.IO.File.Exists(filepath)) {
+				System.IO.StreamReader reader = new System.IO.StreamReader(filepath);
+				
+				int line_number = 1;
+				
+				do {
+					// Read input line
+					string line = reader.ReadLine();
+					
+					// Ignore all comments
+					if (line.StartsWith("#", StringComparison.CurrentCulture)) {
+						continue;
+					}
+					
+					// Split line into different components
+					string [] line_components = line.Split(' ');
+					
+					try {
+						if (line_components.Length == 3) {
+							paths.Add(new Path(GetNode(line_components[0]), GetNode(line_components[1]), Convert.ToUInt32(line_components[2])));
+						} else {
+							Debug.WriteLine("Line " + line_number + " contains the incorrect number of components.");
+							return false;
 						}
 					} catch (FormatException e) {
 						Debug.WriteLine("Problem with line " + line_number);
