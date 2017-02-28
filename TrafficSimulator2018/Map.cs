@@ -17,24 +17,21 @@ namespace TrafficSimulator2018
 	/// The Nodes and Paths are set up on first use of the class and should then
 	/// be accessed statically.
 	/// </summary>
-	public static class Map
-	{
+	public static class Map {
 		
 		static List<Node> nodes = new List<Node>();
 		static List<Path> paths = new List<Path>();
+		static string directory = "..\\..\\data\\maps\\test-map\\";
 		
 		// Setting up the environment
 		static Map() {
 			
-			// Setting up nodes
-			nodes.Add(new Node(10, 10, "0"));
-			nodes.Add(new Node(15, 55, "1"));
-			nodes.Add(new Node(40, 15, "2"));
-			nodes.Add(new Node(50, 80, "3"));
-			nodes.Add(new Node(75, 50, "4"));
-			nodes.Add(new Node(85, 10, "5"));
-			nodes.Add(new Node(95, 90, "6"));
-			nodes.Add(new Node(100, 100, "7"));
+			// TODO: Handle bad map better
+			if (!ReadNodes(directory + "nodes.txt")) {
+				Debug.WriteLine("Problem loading map. Exiting.");
+				System.Windows.Forms.Application.Exit();
+				return;
+			}
 			
 			// Setting up routes
 			paths.Add(new Path(GetNode("0"), GetNode(1), 7));
@@ -230,6 +227,56 @@ namespace TrafficSimulator2018
 				}
 			}
 			return null; // If no path exists between node1 and node2, return null
+		}
+		
+		/// <summary>
+		/// Reads in the Nodes from a given text file.
+		/// </summary>
+		/// <param name="filepath"></param>
+		/// <returns></returns>
+		static bool ReadNodes(string filepath) {
+			if (System.IO.File.Exists(filepath)) {
+				System.IO.StreamReader reader = new System.IO.StreamReader(filepath);
+				
+				int line_number = 1;
+				
+				do {
+					// Read input line
+					string line = reader.ReadLine();
+					
+					// Ignore all comments
+					if (line.StartsWith("#", StringComparison.CurrentCulture)) {
+						continue;
+					}
+					
+					// Split line into different components
+					string [] line_components = line.Split(' ');
+					
+					try {
+						switch (line_components.Length) {
+						case 2:
+							nodes.Add(new Node(Convert.ToUInt32(line_components[0]), Convert.ToUInt32(line_components[1])));
+							break;
+						case 3:
+							nodes.Add(new Node(Convert.ToUInt32(line_components[0]), Convert.ToUInt32(line_components[1]), line_components[2]));
+							break;
+						}
+					} catch (FormatException e) {
+						Debug.WriteLine("Problem with line " + line_number);
+						return false;
+					} catch (OverflowException e) {
+						Debug.WriteLine("Problem with line " + line_number);
+						return false;
+					}
+					
+					line_number++;
+					
+				} while (reader.Peek() != -1);
+				
+				return true;
+			} else {
+				return false;
+			}
 		}
 		
 	}
