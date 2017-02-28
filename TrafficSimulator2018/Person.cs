@@ -144,7 +144,6 @@ namespace TrafficSimulator2018
 			
 			if (route.GetNextPath(position.GetPath()) == null) {
 				time_to_destination = position.GetPath().GetTimeToPseudoNodeFrom(route.GetDestinationNode(), position);
-				Debug.WriteLine(time_to_destination);
 			}
 			// If the Person is nearly at the destination, set the Person at the destination node
 			

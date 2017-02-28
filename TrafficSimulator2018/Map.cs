@@ -27,32 +27,32 @@ namespace TrafficSimulator2018
 		static Map() {
 			
 			// Setting up nodes
-			nodes.Add(new Node(0, 10, 10));
-			nodes.Add(new Node(1, 15, 55));
-			nodes.Add(new Node(2, 40, 15));
-			nodes.Add(new Node(3, 50, 80));
-			nodes.Add(new Node(4, 75, 50));
-			nodes.Add(new Node(5, 85, 10));
-			nodes.Add(new Node(6, 95, 90));
-			nodes.Add(new Node(7, 100, 100));
+			nodes.Add(new Node(10, 10, "0"));
+			nodes.Add(new Node(15, 55, "1"));
+			nodes.Add(new Node(40, 15, "2"));
+			nodes.Add(new Node(50, 80, "3"));
+			nodes.Add(new Node(75, 50, "4"));
+			nodes.Add(new Node(85, 10, "5"));
+			nodes.Add(new Node(95, 90, "6"));
+			nodes.Add(new Node(100, 100, "7"));
 			
 			// Setting up routes
-			paths.Add(new Path(GetNode(0), GetNode(1), 7));
-			paths.Add(new Path(GetNode(0), GetNode(2), 11));
-			paths.Add(new Path(GetNode(1), GetNode(2), 3));
-			paths.Add(new Path(GetNode(1), GetNode(3), 10));
-			paths.Add(new Path(GetNode(1), GetNode(7), 20));
-			paths.Add(new Path(GetNode(2), GetNode(3), 10));
-			paths.Add(new Path(GetNode(2), GetNode(5), 16));
-			paths.Add(new Path(GetNode(3), GetNode(4), 10));
-			paths.Add(new Path(GetNode(3), GetNode(6), 16));
-			paths.Add(new Path(GetNode(4), GetNode(5), 5));
-			paths.Add(new Path(GetNode(4), GetNode(6), 5));
-			paths.Add(new Path(GetNode(6), GetNode(7), 3));
+			paths.Add(new Path(GetNode("0"), GetNode(1), 7));
+			paths.Add(new Path(GetNode("0"), GetNode(2), 11));
+			paths.Add(new Path(GetNode("1"), GetNode(2), 3));
+			paths.Add(new Path(GetNode("1"), GetNode(3), 10));
+			paths.Add(new Path(GetNode("1"), GetNode(7), 20));
+			paths.Add(new Path(GetNode("2"), GetNode(3), 10));
+			paths.Add(new Path(GetNode("2"), GetNode(5), 16));
+			paths.Add(new Path(GetNode("3"), GetNode(4), 10));
+			paths.Add(new Path(GetNode("3"), GetNode(6), 16));
+			paths.Add(new Path(GetNode("4"), GetNode(5), 5));
+			paths.Add(new Path(GetNode("4"), GetNode(6), 5));
+			paths.Add(new Path(GetNode("6"), GetNode(7), 3));
 		}
 		
 		/// <summary>
-		/// Returns a List<Path> object that contains all of the routes in the map.
+		/// Returns a List object that contains all of the routes in the map.
 		/// </summary>
 		/// <returns></returns>
 		public static List<Path> GetPaths() {
@@ -60,7 +60,7 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
-		/// Returns a List<Node> object that contains all of the routes in the map.
+		/// Returns a List object that contains all of the routes in the map.
 		/// </summary>
 		/// <returns></returns>
 		public static List<Node> GetNodes() {
@@ -74,14 +74,34 @@ namespace TrafficSimulator2018
 		/// <param name="id"></param>
 		/// <returns></returns>
 		public static Node GetNode(int id) {
-			for (int i = 0; i < nodes.Count; i++) {
-				if (nodes[i].GetID() == id) {
-					return nodes[i];
+			
+			// Finding the Node by ID
+			foreach (Node node in nodes) {
+				if (node.GetID() == id) {
+					return node;
 				}
 			}
 			
-			// If the ID cannot be found
+			// If the ID cannot be found, inform user and return null
 			Debug.WriteLine("Node with ID " + id + " cannot be found.");
+			return null;
+		}
+		
+		/// <summary>
+		/// Returns the Node with the given name. If no node exists with that name, a null pointer is returned.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		public static Node GetNode(string name) {
+			
+			// Finding the Node by name
+			foreach (Node node in nodes) {
+				if (node.GetName().Equals(name)) {
+					return node;
+				}
+			}
+			
+			// If the Node with that name cannot be found, return null
 			return null;
 		}
 		
@@ -91,8 +111,7 @@ namespace TrafficSimulator2018
 		/// </summary>
 		/// <param name="node_ID"></param>
 		/// <returns></returns>
-		public static List<Path> GetPathsFromNode(int node_ID)
-		{
+		public static List<Path> GetPathsFromNode(int node_ID) {
 			Node node = GetNode(node_ID);
 			return GetPathsFromNode(node);
 		}

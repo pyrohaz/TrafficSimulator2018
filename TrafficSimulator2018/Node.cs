@@ -14,11 +14,14 @@ namespace TrafficSimulator2018
 	/// A Node is a junction between different Paths. It contains an x and y position
 	/// on the map.
 	/// </summary>
-	public class Node
-	{
+	public class Node {
 		
+		static int nextID = 0;
+		
+		protected int id = nextID++;
 		protected double x = 0.0, y = 0.0;
-		protected int visitors = 0, id = -1;
+		protected int visitors = 0;
+		protected string name = "node";
 		
 		/// <summary>
 		/// Default constructor sets a node with default values.
@@ -26,15 +29,24 @@ namespace TrafficSimulator2018
 		public Node() {}
 		
 		/// <summary>
-		/// Constructor that allows the ID and coordinates to be set on initialisation.
+		/// Contructor that allows the coordinates of the node to be set on initialisation.
 		/// </summary>
-		/// <param name="ID"></param>
 		/// <param name="X"></param>
 		/// <param name="Y"></param>
-		public Node(int ID, double X, double Y) {
-			id = ID;
+		public Node(double X, double Y) {
 			x = X;
 			y = Y;
+		}
+		
+		/// <summary>
+		/// Constructor that allows the name and coordinates to be set on initialisation. The name
+		/// can be used as an identifier later in the program.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="X"></param>
+		/// <param name="Y"></param>
+		public Node(double X, double Y, string name) : this(X, Y) {
+			this.name = name;
 		}
 		
 		/// <summary>
@@ -79,6 +91,23 @@ namespace TrafficSimulator2018
 		/// <returns></returns>
 		public int GetID() {
 			return id;
+		}
+		
+		/// <summary>
+		/// Returns a string representing the name of the Node. If the name has never been set,
+		/// this will return "node".
+		/// </summary>
+		/// <returns></returns>
+		public string GetName() {
+			return name;
+		}
+		
+		/// <summary>
+		/// Sets the name of the Node.
+		/// </summary>
+		/// <param name="name"></param>
+		public void SetName(string name) {
+			this.name = name;
 		}
 		
 		/// <summary>

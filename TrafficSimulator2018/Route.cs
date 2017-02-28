@@ -164,12 +164,6 @@ namespace TrafficSimulator2018
 			// Determine which directions the Paths should be travelled in
 			DetermineDirections();
 			
-			// TODO: Remove when comfortable
-			Debug.WriteLine("Path Route: ");
-			foreach (Path path in path_route) {
-				Debug.WriteLine(path.GetNodes()[0].GetID() + ", " + path.GetNodes()[1].GetID());
-			}
-			
 		}
 		
 		/// <summary>
