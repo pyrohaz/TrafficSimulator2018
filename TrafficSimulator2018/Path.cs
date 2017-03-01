@@ -24,9 +24,10 @@ namespace TrafficSimulator2018
 		Node [] nodes = new Node[2];
 		double speed_limit = 0;
 		double distance_between_nodes = 0;
+		string name = "path";
 		
 		/// <summary>
-		/// Sets the start and end points and speed limit of the path upon initialisation.
+		/// Sets the start and end points and speed limit of the Path upon initialisation.
 		/// </summary>
 		/// <param name="node1"></param>
 		/// <param name="node2"></param>
@@ -39,7 +40,19 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
-		/// Returns an array of Nodes that contains the start and end points of the path.
+		/// Sets the start and end points, speed limit and name of the Path upon
+		/// initialisation.
+		/// </summary>
+		/// <param name="node1"></param>
+		/// <param name="node2"></param>
+		/// <param name="speed_limit"></param>
+		/// <param name="name"></param>
+		public Path(Node node1, Node node2, double speed_limit, string name) : this(node1, node2, speed_limit) {
+			this.name = name;
+		}
+		
+		/// <summary>
+		/// Returns an array of Nodes that contains the start and end points of the Path.
 		/// The size of the returned Node array will always be 2.
 		/// </summary>
 		/// <returns></returns>
@@ -48,7 +61,7 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
-		/// Returns an int that represents the ID of the path.
+		/// Returns an int that represents the ID of the Path.
 		/// </summary>
 		/// <returns></returns>
 		public int GetID() {
@@ -56,7 +69,7 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
-		/// Returns a double representing the speed limit of the path.
+		/// Returns a double representing the speed limit of the Path.
 		/// </summary>
 		/// <returns></returns>
 		public double GetSpeedLimit() {
@@ -64,7 +77,24 @@ namespace TrafficSimulator2018
 		}
 		
 		/// <summary>
-		/// Sets the speed limit of the path.
+		/// Returns the name of the Path. If the name has not been set, this will return
+		/// "name".
+		/// </summary>
+		/// <returns></returns>
+		public string GetName() {
+			return name;
+		}
+		
+		/// <summary>
+		/// Sets the name of the Path.
+		/// </summary>
+		/// <param name="name"></param>
+		public void SetName(string name) {
+			this.name = name;
+		}
+		
+		/// <summary>
+		/// Sets the speed limit of the Path.
 		/// </summary>
 		/// <param name="speed_limit"></param>
 		public void SetSpeedLimit(double speed_limit) {
