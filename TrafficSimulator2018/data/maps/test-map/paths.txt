@@ -1,0 +1,15 @@
+# File that defines how paths are set up
+# Structure:
+# node1Name node2Name speedLimit optionalName
+0 1 7
+0 2 11
+1 2 3
+1 3 10
+1 7 20
+2 3 10
+2 5 16
+3 4 10
+3 6 16
+4 5 5
+4 6 5
+6 7 3
